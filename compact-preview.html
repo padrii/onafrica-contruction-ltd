@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fomu ya Usajili - Compact Layout</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .preview-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        .form-preview {
+            text-align: left;
+            margin: 25px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #1e3c72;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .form-field {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+        .form-field label {
+            display: block;
+            font-weight: 600;
+            color: #1e3c72;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+        .form-field input, .form-field select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        .btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30,60,114,0.3);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        .btn-success:hover {
+            box-shadow: 0 5px 15px rgba(40,167,69,0.3);
+        }
+        .layout-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #1e3c72;
+        }
+        .info-card h3 {
+            color: #1e3c72;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .info-card p {
+            color: #666;
+            font-size: 12px;
+            margin: 0;
+        }
+        .logo-icon {
+            font-size: 36px;
+            color: #566177;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <div class="logo-icon">🚛</div>
+        <h1>📋 Fomu ya Usajili - Compact Layout</h1>
+        <p><strong>Muonekano Mpya</strong> - Fomu ya usajili imepunguzwa ukubwa</p>
+        
+        <div class="layout-info">
+            <div class="info-card">
+                <h3>📏 Ukubwa Mdogo</h3>
+                <p>Fomu imepunguzwa ukubwa</p>
+            </div>
+            <div class="info-card">
+                <h3>📱 Responsive</h3>
+                <p>Inafanya kazi vizuri kwenye simu</p>
+            </div>
+            <div class="info-card">
+                <h3>⚡ Fast</h3>
+                <p>Muonekano wa haraka</p>
+            </div>
+        </div>
+        
+        <div class="form-preview">
+            <h3 style="color: #1e3c72; margin-bottom: 15px; font-size: 16px;">Muhtasari wa Fomu ya Usajili:</h3>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>👤 Jina Kamili</label>
+                    <input type="text" placeholder="Weka jina kamili" disabled>
+                </div>
+                <div class="form-field">
+                    <label>🔤 Jina la Mtumiaji</label>
+                    <input type="text" placeholder="Weka jina la mtumiaji" disabled>
+                </div>
+                <div class="form-field">
+                    <label>📧 Barua Pepe</label>
+                    <input type="email" placeholder="Weka barua pepe" disabled>
+                </div>
+                <div class="form-field">
+                    <label>📞 Namba ya Simu</label>
+                    <input type="tel" placeholder="Weka namba ya simu" disabled>
+                </div>
+                <div class="form-field">
+                    <label>🔒 Neno la Siri</label>
+                    <input type="password" placeholder="Weka neno la siri" disabled>
+                </div>
+                <div class="form-field">
+                    <label>✅ Thibitisha Neno la Siri</label>
+                    <input type="password" placeholder="Thibitisha neno la siri" disabled>
+                </div>
+                <div class="form-field full-width">
+                    <label>👔 Cheo</label>
+                    <select disabled>
+                        <option>Chagua cheo</option>
+                        <option>Msimamizi Mkuu</option>
+                        <option>Msimamizi</option>
+                        <option>Msimamizi wa Sehemu</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-success" style="width: 100%; margin-top: 15px;">✅ Sajili Msimamizi</button>
+        </div>
+
+        <p><strong>Jina la mtumiaji:</strong> admin</p>
+        <p><strong>Neno la siri:</strong> admin123</p>
+        
+        <div style="margin-top: 25px;">
+            <a href="index.html" class="btn btn-success">🚀 Fungua Mfumo Kamili</a>
+            <a href="register-preview.html" class="btn">📋 Ona Two-Column Layout</a>
+        </div>
+        
+        <p style="margin-top: 25px; font-size: 12px; color: #999;">
+            Fomu ya usajili sasa ina ukubwa mdogo na inafanya kazi vizuri kwenye vifaa vyote
+        </p>
+    </div>
+</body>
+</html> 

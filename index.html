@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mfumo wa Usimamizi wa Madereva - On Africa Construction</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Login Section -->
+        <div id="login-section" class="section active">
+            <div class="login-container">
+                <div class="logo-section">
+                    <div class="logo-container">
+                        <div class="gradient-logo">
+                            <div class="logo-icon">🚛</div>
+                            <div class="logo-text">ON AFRICA</div>
+                        </div>
+                    </div>
+                    <h1>Mfumo wa Usimamizi wa Madereva</h1>
+                    <h2>On Africa Construction Limited</h2>
+                </div>
+                
+                <!-- Login Form -->
+                <div id="login-form-container">
+                    <h3><i class="fas fa-sign-in-alt"></i> Ingia kama Msimamizi</h3>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="username"><i class="fas fa-user"></i> Jina la Mtumiaji:</label>
+                            <input type="text" id="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password"><i class="fas fa-lock"></i> Neno la Siri:</label>
+                            <input type="password" id="password" required>
+                        </div>
+                        <button type="submit"><i class="fas fa-sign-in-alt"></i> Ingia</button>
+                        <p id="loginMessage" class="message"></p>
+                    </form>
+                    <p class="switch-text">
+                        Huna akaunti? <a href="#" id="showRegister"><i class="fas fa-user-plus"></i> Jisajili hapa</a>
+                    </p>
+                </div>
+
+                <!-- Admin Registration Form -->
+                <div id="register-form-container" style="display: none;">
+                    <h3><i class="fas fa-user-plus"></i> Usajili wa Msimamizi Mpya</h3>
+                    <form id="adminRegisterForm">
+                        <div class="form-group">
+                            <label for="regFullName"><i class="fas fa-user"></i> Jina Kamili:</label>
+                            <input type="text" id="regFullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regUsername"><i class="fas fa-at"></i> Jina la Mtumiaji:</label>
+                            <input type="text" id="regUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regEmail"><i class="fas fa-envelope"></i> Barua Pepe:</label>
+                            <input type="email" id="regEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regPhone"><i class="fas fa-phone"></i> Namba ya Simu:</label>
+                            <input type="tel" id="regPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regPassword"><i class="fas fa-lock"></i> Neno la Siri:</label>
+                            <input type="password" id="regPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regConfirmPassword"><i class="fas fa-check-circle"></i> Thibitisha Neno la Siri:</label>
+                            <input type="password" id="regConfirmPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regRole"><i class="fas fa-user-tie"></i> Cheo:</label>
+                            <select id="regRole" required>
+                                <option value="">Chagua cheo</option>
+                                <option value="admin">Msimamizi Mkuu</option>
+                                <option value="manager">Msimamizi</option>
+                                <option value="supervisor">Msimamizi wa Sehemu</option>
+                            </select>
+                        </div>
+                        <button type="submit"><i class="fas fa-user-plus"></i> Sajili Msimamizi</button>
+                        <p id="registerMessage" class="message"></p>
+                    </form>
+                    <p class="switch-text">
+                        Una akaunti? <a href="#" id="showLogin"><i class="fas fa-sign-in-alt"></i> Ingia hapa</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="dashboard-section" class="section">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <i class="fas fa-truck-moving header-icon"></i>
+                    <h1>Sehemu ya Msimamizi</h1>
+                </div>
+                <div class="user-info">
+                    <span id="currentUser"><i class="fas fa-user-circle"></i> Admin</span>
+                    <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Ondoka</button>
+                </div>
+            </header>
+
+            <nav class="dashboard-nav">
+                <button class="nav-btn active" data-section="overview">
+                    <i class="fas fa-chart-line"></i> Muhtasari
+                </button>
+                <button class="nav-btn" data-section="register">
+                    <i class="fas fa-user-plus"></i> Usajili wa Dereva
+                </button>
+                <button class="nav-btn" data-section="drivers">
+                    <i class="fas fa-users"></i> Orodha ya Madereva
+                </button>
+                <button class="nav-btn" data-section="terminations">
+                    <i class="fas fa-user-times"></i> Madereva Walioacha Kazi
+                </button>
+                <button class="nav-btn" data-section="admins">
+                    <i class="fas fa-user-tie"></i> Wasimamizi
+                </button>
+                <button class="nav-btn" data-section="staff">
+                    <i class="fas fa-user-friends"></i> Staff
+                </button>
+            </nav>
+
+            <!-- Overview Section -->
+            <div id="overview" class="dashboard-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Madereva Waliosajiliwa</h3>
+                        <p id="totalDrivers">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-times"></i>
+                        </div>
+                        <h3>Madereva Walioacha Kazi</h3>
+                        <p id="totalTerminations">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Leseni Zinazokwisha</h3>
+                        <p id="expiringLicenses">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3>Wasimamizi</h3>
+                        <p id="totalAdmins">0</p>
+                    </div>
+                </div>
+                <div class="recent-activity">
+                    <h3><i class="fas fa-history"></i> Shughuli za Hivi Karibuni</h3>
+                    <div id="recentActivity"></div>
+                </div>
+            </div>
+
+            <!-- Driver Registration Section -->
+            <div id="register" class="dashboard-content">
+                <h2><i class="fas fa-user-plus"></i> Usajili wa Dereva Mpya</h2>
+                <form id="driverForm" class="driver-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullname"><i class="fas fa-user"></i> Jina Kamili:</label>
+                            <input type="text" id="fullname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="license"><i class="fas fa-id-card"></i> Namba ya Leseni:</label>
+                            <input type="text" id="license" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="licenseExpiry"><i class="fas fa-calendar-alt"></i> Tarehe ya Kuisha kwa Leseni:</label>
+                            <input type="date" id="licenseExpiry" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone"><i class="fas fa-phone"></i> Namba ya Simu:</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email"><i class="fas fa-envelope"></i> Barua Pepe:</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleType"><i class="fas fa-truck"></i> Aina ya Gari:</label>
+                            <select id="vehicleType" required>
+                                <option value="">Chagua aina ya gari</option>
+                                <option value="Truck">Truck</option>
+                                <option value="Pickup">Pickup</option>
+                                <option value="Car">Car</option>
+                                
+                                <option value="Motorcycle">Motorcycle</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address"><i class="fas fa-map-marker-alt"></i> Mahali anakoishi:</label>
+                        <input type="text" id="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyContact"><i class="fas fa-phone-alt"></i> Mawasiliano ya Dharura:</label>
+                        <input type="tel" id="emergencyContact" required>
+                    </div>
+                    <button type="submit"><i class="fas fa-save"></i> Sajili Dereva</button>
+                    <p id="message" class="message"></p>
+                </form>
+            </div>
+
+            <!-- Drivers List Section -->
+            <div id="drivers" class="dashboard-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Orodha ya Madereva Waliosajiliwa</h2>
+                    <div class="search-box">
+                        <i class="fas fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #666;"></i>
+                        <input type="text" id="searchDrivers" placeholder="Tafuta dereva..." style="padding-left: 40px;">
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="driversTable">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user"></i> Jina</th>
+                                <th><i class="fas fa-id-card"></i> Leseni</th>
+                                <th><i class="fas fa-calendar"></i> Muda wa Leseni</th>
+                                <th><i class="fas fa-phone"></i> Simu</th>
+                                <th><i class="fas fa-envelope"></i> Barua Pepe</th>
+                                <th><i class="fas fa-truck"></i> Aina ya Gari</th>
+                                <th><i class="fas fa-map-marker-alt"></i> Mahali</th>
+                                <th><i class="fas fa-cogs"></i> Vitendo</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Terminations Section -->
+            <div id="terminations" class="dashboard-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-times"></i> Madereva Walioacha Kazi</h2>
+                    <button id="addTerminationBtn" class="btn-primary"><i class="fas fa-plus"></i> Ongeza Dereva Aliyecha Kazi</button>
+                </div>
+                <div class="table-container">
+                    <table id="terminationsTable">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user"></i> Jina</th>
+                                <th><i class="fas fa-id-card"></i> Leseni</th>
+                                <th><i class="fas fa-calendar-times"></i> Tarehe ya Kuacha Kazi</th>
+                                <th><i class="fas fa-exclamation-circle"></i> Sababu</th>
+                                <th><i class="fas fa-comment"></i> Maelezo</th>
+                                <th><i class="fas fa-cogs"></i> Vitendo</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Admins Management Section -->
+            <div id="admins" class="dashboard-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-tie"></i> Usimamizi wa Wasimamizi</h2>
+                    <button id="addAdminBtn" class="btn-primary"><i class="fas fa-plus"></i> Ongeza Msimamizi Mpya</button>
+                </div>
+                <div class="table-container">
+                    <table id="adminsTable">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user"></i> Jina Kamili</th>
+                                <th><i class="fas fa-at"></i> Jina la Mtumiaji</th>
+                                <th><i class="fas fa-envelope"></i> Barua Pepe</th>
+                                <th><i class="fas fa-phone"></i> Simu</th>
+                                <th><i class="fas fa-user-tie"></i> Cheo</th>
+                                <th><i class="fas fa-calendar-plus"></i> Tarehe ya Usajili</th>
+                                <th><i class="fas fa-cogs"></i> Vitendo</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Staff Management Section -->
+            <div id="staff" class="dashboard-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-friends"></i> Usimamizi wa Staff</h2>
+                    <button id="addStaffBtn" class="btn-primary"><i class="fas fa-plus"></i> Ongeza Staff Mpya</button>
+                </div>
+                <div class="table-container">
+                    <table id="staffTable">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user"></i> Jina Kamili</th>
+                                <th><i class="fas fa-at"></i> Jina la Mtumiaji</th>
+                                <th><i class="fas fa-envelope"></i> Barua Pepe</th>
+                                <th><i class="fas fa-phone"></i> Simu</th>
+                                <th><i class="fas fa-briefcase"></i> Cheo/Kazi</th>
+                                <th><i class="fas fa-calendar-plus"></i> Tarehe ya Usajili</th>
+                                <th><i class="fas fa-cogs"></i> Vitendo</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Termination Modal -->
+        <div id="terminationModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2><i class="fas fa-user-times"></i> Ongeza Dereva Aliyecha Kazi</h2>
+                <form id="terminationForm">
+                    <div class="form-group">
+                        <label for="terminatedDriver"><i class="fas fa-user"></i> Chagua Dereva:</label>
+                        <select id="terminatedDriver" required>
+                            <option value="">Chagua dereva</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="terminationDate"><i class="fas fa-calendar-times"></i> Tarehe ya Kuacha Kazi:</label>
+                        <input type="date" id="terminationDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="terminationReason"><i class="fas fa-exclamation-circle"></i> Sababu:</label>
+                        <select id="terminationReason" required>
+                            <option value="">Chagua sababu</option>
+                            <option value="Leseni imekwisha">Leseni imekwisha</option>
+                            <option value="Kosa la usalama">Kosa la usalama</option>
+                            <option value="Kutokuwepo kwa kazi">Kutokuwepo kazini bila taarifa</option>
+                            <option value="Kujiondoa">Kujiondoa</option>
+                            <option value="Kufukuzwa">Kufukuzwa</option>
+                            <option value="Nyingine">Nyingine</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="terminationDetails"><i class="fas fa-comment"></i> Maelezo zaidi:</label>
+                        <textarea id="terminationDetails" rows="3"></textarea>
+                    </div>
+                    <button type="submit"><i class="fas fa-save"></i> Hifadhi</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Admin Registration Modal -->
+        <div id="adminModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2><i class="fas fa-user-plus"></i> Ongeza Msimamizi Mpya</h2>
+                <form id="adminModalForm">
+                    <div class="form-group">
+                        <label for="modalFullName"><i class="fas fa-user"></i> Jina Kamili:</label>
+                        <input type="text" id="modalFullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalUsername"><i class="fas fa-at"></i> Jina la Mtumiaji:</label>
+                        <input type="text" id="modalUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalEmail"><i class="fas fa-envelope"></i> Barua Pepe:</label>
+                        <input type="email" id="modalEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalPhone"><i class="fas fa-phone"></i> Namba ya Simu:</label>
+                        <input type="tel" id="modalPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalPassword"><i class="fas fa-lock"></i> Neno la Siri:</label>
+                        <input type="password" id="modalPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalRole"><i class="fas fa-user-tie"></i> Cheo:</label>
+                        <select id="modalRole" required>
+                            <option value="">Chagua cheo</option>
+                            <option value="admin">Msimamizi Mkuu</option>
+                            <option value="manager">Msimamizi</option>
+                            <option value="supervisor">Msimamizi wa Sehemu</option>
+                        </select>
+                    </div>
+                    <button type="submit"><i class="fas fa-user-plus"></i> Sajili Msimamizi</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Staff Registration Modal -->
+        <div id="staffModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2><i class="fas fa-user-plus"></i> Ongeza Staff Mpya</h2>
+                <form id="staffModalForm">
+                    <div class="form-group">
+                        <label for="staffFullName"><i class="fas fa-user"></i> Jina Kamili:</label>
+                        <input type="text" id="staffFullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffUsername"><i class="fas fa-at"></i> Jina la Mtumiaji:</label>
+                        <input type="text" id="staffUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffEmail"><i class="fas fa-envelope"></i> Barua Pepe:</label>
+                        <input type="email" id="staffEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffPhone"><i class="fas fa-phone"></i> Namba ya Simu:</label>
+                        <input type="tel" id="staffPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffRole"><i class="fas fa-briefcase"></i> Cheo/Kazi:</label>
+                        <input type="text" id="staffRole" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffPassword"><i class="fas fa-lock"></i> Neno la Siri:</label>
+                        <input type="password" id="staffPassword" required>
+                    </div>
+                    <button type="submit"><i class="fas fa-user-plus"></i> Sajili Staff</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 

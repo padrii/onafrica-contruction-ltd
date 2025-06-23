@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Mfumo wa Usimamizi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: white;
+        }
+        .test-container {
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .test-btn {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .test-btn:hover {
+            background: #2a5298;
+        }
+        #testResult {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🚛 Test ya Mfumo wa Usimamizi</h1>
+        <h2>On Africa Construction</h2>
+        
+        <div>
+            <button class="test-btn" onclick="testBasic()">Test Basic JavaScript</button>
+            <button class="test-btn" onclick="testLocalStorage()">Test LocalStorage</button>
+            <button class="test-btn" onclick="testFontAwesome()">Test Font Awesome</button>
+            <button class="test-btn" onclick="testJsPDF()">Test JSPDF</button>
+        </div>
+        
+        <div id="testResult"></div>
+        
+        <div style="margin-top: 30px;">
+            <a href="index.html" class="test-btn" style="text-decoration: none; display: inline-block;">Rudi kwenye Mfumo Mkuu</a>
+        </div>
+    </div>
+
+    <script>
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('testResult');
+            resultDiv.textContent = message;
+            resultDiv.className = type;
+        }
+
+        function testBasic() {
+            try {
+                const test = "Hello World";
+                showResult(`✅ JavaScript inafanya kazi: ${test}`, 'success');
+            } catch (error) {
+                showResult(`❌ JavaScript error: ${error.message}`, 'error');
+            }
+        }
+
+        function testLocalStorage() {
+            try {
+                localStorage.setItem('test', 'working');
+                const result = localStorage.getItem('test');
+                localStorage.removeItem('test');
+                showResult(`✅ LocalStorage inafanya kazi: ${result}`, 'success');
+            } catch (error) {
+                showResult(`❌ LocalStorage error: ${error.message}`, 'error');
+            }
+        }
+
+        function testFontAwesome() {
+            try {
+                // Check if Font Awesome is loaded
+                const testIcon = document.createElement('i');
+                testIcon.className = 'fas fa-truck';
+                document.body.appendChild(testIcon);
+                const computedStyle = window.getComputedStyle(testIcon, '::before');
+                document.body.removeChild(testIcon);
+                showResult('✅ Font Awesome inafanya kazi', 'success');
+            } catch (error) {
+                showResult(`❌ Font Awesome error: ${error.message}`, 'error');
+            }
+        }
+
+        function testJsPDF() {
+            try {
+                if (typeof window.jsPDF !== 'undefined') {
+                    showResult('✅ JSPDF library imepakiwa', 'success');
+                } else {
+                    showResult('❌ JSPDF library haijapakiwa', 'error');
+                }
+            } catch (error) {
+                showResult(`❌ JSPDF error: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-run basic test
+        window.onload = function() {
+            testBasic();
+        };
+    </script>
+</body>
+</html> 

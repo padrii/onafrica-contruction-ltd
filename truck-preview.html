@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page - Truck Logo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .preview-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        .logo-container {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .truck-logo {
+            width: 120px;
+            height: 80px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            transition: transform 0.3s ease;
+        }
+        .truck-logo:hover {
+            transform: scale(1.05);
+        }
+        .btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30,60,114,0.3);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        .btn-success:hover {
+            box-shadow: 0 5px 15px rgba(40,167,69,0.3);
+        }
+        .feature-list {
+            text-align: left;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #1e3c72;
+        }
+        .feature-list h3 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .feature-list ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .feature-list li {
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <div class="logo-container">
+            <svg width="120" height="80" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" class="truck-logo">
+                <!-- Truck Body -->
+                <rect x="10" y="35" width="70" height="25" rx="3" fill="#1e3c72" stroke="#0f2a4a" stroke-width="2"/>
+                
+                <!-- Truck Cabin -->
+                <rect x="80" y="30" width="25" height="30" rx="3" fill="#2a5298" stroke="#1e3c72" stroke-width="2"/>
+                
+                <!-- Windows -->
+                <rect x="82" y="32" width="21" height="8" rx="1" fill="#87ceeb" stroke="#1e3c72" stroke-width="1"/>
+                <rect x="82" y="42" width="21" height="8" rx="1" fill="#87ceeb" stroke="#1e3c72" stroke-width="1"/>
+                
+                <!-- Wheels -->
+                <circle cx="25" cy="65" r="8" fill="#333" stroke="#000" stroke-width="2"/>
+                <circle cx="25" cy="65" r="4" fill="#666"/>
+                <circle cx="65" cy="65" r="8" fill="#333" stroke="#000" stroke-width="2"/>
+                <circle cx="65" cy="65" r="4" fill="#666"/>
+                
+                <!-- Headlights -->
+                <circle cx="105" cy="35" r="3" fill="#ffff00" stroke="#ff8c00" stroke-width="1"/>
+                <circle cx="105" cy="45" r="3" fill="#ffff00" stroke="#ff8c00" stroke-width="1"/>
+                
+                <!-- Grill -->
+                <rect x="80" y="40" width="3" height="15" fill="#666"/>
+                <rect x="85" y="40" width="3" height="15" fill="#666"/>
+                <rect x="90" y="40" width="3" height="15" fill="#666"/>
+                
+                <!-- Exhaust -->
+                <rect x="8" y="45" width="4" height="8" fill="#666"/>
+                <circle cx="10" cy="53" r="2" fill="#333"/>
+                
+                <!-- Cargo Area Lines -->
+                <line x1="20" y1="40" x2="20" y2="55" stroke="#0f2a4a" stroke-width="1"/>
+                <line x1="35" y1="40" x2="35" y2="55" stroke="#0f2a4a" stroke-width="1"/>
+                <line x1="50" y1="40" x2="50" y2="55" stroke="#0f2a4a" stroke-width="1"/>
+                <line x1="65" y1="40" x2="65" y2="55" stroke="#0f2a4a" stroke-width="1"/>
+                
+                <!-- Company Name -->
+                <text x="60" y="75" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#1e3c72">ON AFRICA</text>
+            </svg>
+        </div>
+        
+        <h1>🚛 Picha Mpya ya Truck</h1>
+        <p><strong>Muonekano Mpya</strong> - Picha ya truck imeongezwa kwenye ukurasa wa login</p>
+        
+        <div class="feature-list">
+            <h3>✨ Vipengele Vipya:</h3>
+            <ul>
+                <li>🎨 Picha ya truck ya On Africa Construction</li>
+                <li>📐 Ukubwa: 120px x 80px</li>
+                <li>🎭 Hover effect - inakua kidogo unapoiweka mouse</li>
+                <li>🌫️ Drop shadow kwa muonekano mzuri</li>
+                <li>🎯 SVG format - ina quality nzuri</li>
+                <li>📱 Responsive - inafanya kazi kwenye vifaa vyote</li>
+            </ul>
+        </div>
+
+        <p><strong>Jina la mtumiaji:</strong> admin</p>
+        <p><strong>Neno la siri:</strong> admin123</p>
+        
+        <div style="margin-top: 25px;">
+            <a href="index.html" class="btn btn-success">🚀 Fungua Mfumo Kamili</a>
+            <a href="compact-preview.html" class="btn">📏 Ona Compact Layout</a>
+        </div>
+        
+        <p style="margin-top: 25px; font-size: 12px; color: #999;">
+            Picha ya truck sasa inaonekana kwenye ukurasa wa login na ina muonekano mzuri
+        </p>
+    </div>
+</body>
+</html> 

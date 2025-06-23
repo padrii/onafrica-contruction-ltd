@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page - Colorful Gradient Logo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .preview-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        .logo-container {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .gradient-logo {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            min-width: 140px;
+            text-align: center;
+        }
+        .gradient-logo:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+        .logo-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        .logo-text {
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-family: 'Arial', sans-serif;
+        }
+        .btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30,60,114,0.3);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        .btn-success:hover {
+            box-shadow: 0 5px 15px rgba(40,167,69,0.3);
+        }
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .color-card {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .color-1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .color-2 {
+            background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%);
+        }
+        .color-3 {
+            background: linear-gradient(135deg, #f093fb 0%, #667eea 100%);
+        }
+        .feature-list {
+            text-align: left;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .feature-list h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .feature-list ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .feature-list li {
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <div class="logo-container">
+            <div class="gradient-logo">
+                <div class="logo-icon">🚛</div>
+                <div class="logo-text">ON AFRICA</div>
+            </div>
+        </div>
+        
+        <h1>🎨 Logo Mpya ya Rangi</h1>
+        <p><strong>Muonekano Mpya</strong> - Logo ya gradient yenye rangi nzuri</p>
+        
+        <div class="color-palette">
+            <div class="color-card color-1">Purple Blue</div>
+            <div class="color-card color-2">Purple Pink</div>
+            <div class="color-card color-3">Pink Blue</div>
+        </div>
+        
+        <div class="feature-list">
+            <h3>✨ Vipengele Vipya:</h3>
+            <ul>
+                <li>🌈 Gradient ya rangi tatu: Blue, Purple, Pink</li>
+                <li>🎭 Hover effect - inakua na kuinuka</li>
+                <li>🌫️ Box shadow ya rangi</li>
+                <li>📝 Maandishi ya "ON AFRICA" kwenye logo</li>
+                <li>🚛 Icon ya truck kwenye logo</li>
+                <li>📱 Responsive design</li>
+            </ul>
+        </div>
+
+        <p><strong>Jina la mtumiaji:</strong> admin</p>
+        <p><strong>Neno la siri:</strong> admin123</p>
+        
+        <div style="margin-top: 25px;">
+            <a href="index.html" class="btn btn-success">🚀 Fungua Mfumo Kamili</a>
+            <a href="truck-preview.html" class="btn">🚛 Ona Truck Logo</a>
+        </div>
+        
+        <p style="margin-top: 25px; font-size: 12px; color: #999;">
+            Logo mpya ina rangi nzuri na muonekano wa kisasa
+        </p>
+    </div>
+</body>
+</html> 

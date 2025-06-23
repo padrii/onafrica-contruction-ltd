@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muonekano Mpya - Mfumo wa Madereva</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .preview-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 700px;
+        }
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #1e3c72;
+        }
+        .feature-card h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .feature-card p {
+            color: #666;
+            font-size: 14px;
+            margin: 0;
+        }
+        .btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30,60,114,0.3);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        .btn-success:hover {
+            box-shadow: 0 5px 15px rgba(40,167,69,0.3);
+        }
+        .color-palette {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .color-swatch {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+        }
+        .blue-primary {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+        .blue-light {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #e9ecef;
+        }
+        .white {
+            background: white;
+            color: #333;
+            border: 2px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <h1>🎨 Muonekano Mpya wa Dashboard</h1>
+        <p><strong>Rangi ya Blue Mpango</strong> - Mfumo wa Usimamizi wa Madereva</p>
+        
+        <div class="color-palette">
+            <div class="color-swatch blue-primary">Blue<br>Primary</div>
+            <div class="color-swatch blue-light">Light<br>Gray</div>
+            <div class="color-swatch white">White</div>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>🎯 Muonekano Modern</h3>
+                <p>Rangi ya blue mpango na muundo wa kisasa</p>
+            </div>
+            <div class="feature-card">
+                <h3>📱 Responsive Design</h3>
+                <p>Inafanya kazi vizuri kwenye kompyuta na simu</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎨 Icons na Visual Elements</h3>
+                <p>Icons za Font Awesome na vipengele vya kuona</p>
+            </div>
+            <div class="feature-card">
+                <h3>⚡ Smooth Animations</h3>
+                <p>Animations za hover na transitions</p>
+            </div>
+            <div class="feature-card">
+                <h3>📊 Dashboard ya Muhtasari</h3>
+                <p>Takwimu za jumla na shughuli za hivi karibuni</p>
+            </div>
+            <div class="feature-card">
+                <h3>🔐 Usalama wa Admin</h3>
+                <p>Usajili wa wasimamizi na usimamizi wa akaunti</p>
+            </div>
+        </div>
+
+        <p><strong>Jina la mtumiaji:</strong> admin</p>
+        <p><strong>Neno la siri:</strong> admin123</p>
+        
+        <div style="margin-top: 30px;">
+            <a href="index.html" class="btn btn-success">🚀 Fungua Dashboard Mpya</a>
+            <a href="simple.html" class="btn">📋 Muhtasari wa Mfumo</a>
+        </div>
+        
+        <p style="margin-top: 30px; font-size: 14px; color: #999;">
+            Muonekano mpya una rangi ya blue mpango (#1e3c72 - #2a5298) na muundo wa kisasa
+        </p>
+    </div>
+</body>
+</html> 
