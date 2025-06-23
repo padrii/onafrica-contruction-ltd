@@ -870,4 +870,54 @@ tr:hover {
     .stat-card p {
         font-size: 32px;
     }
+}
+
+@media (max-width: 600px) {
+    body {
+        font-size: 16px;
+        padding: 5px;
+    }
+    .dashboard-content, .form-container, .table-container {
+        width: 100%;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .nav-btn {
+        width: 100%;
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+    .login-container, .modal-content {
+        max-width: 100vw;
+        padding: 10px;
+    }
+    .form-group, .form-row {
+        width: 100%;
+        display: block;
+    }
+    input, select, textarea, button {
+        font-size: 16px;
+    }
+    th, td {
+        padding: 8px;
+        font-size: 13px;
+    }
+    .stat-card p {
+        font-size: 22px;
+    }
+    .stat-icon {
+        font-size: 22px;
+    }
+    .recent-activity, .activity-item {
+        font-size: 14px;
+    }
+    .dashboard-header, .dashboard-nav {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px 5px;
+    }
+    .user-info {
+        flex-direction: column;
+        gap: 5px;
+    }
 } 
