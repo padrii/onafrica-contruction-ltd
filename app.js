@@ -342,8 +342,11 @@ function showMessage(message, type) {
 function loadDriversTable() {
     const tbody = document.querySelector('#driversTable tbody');
     tbody.innerHTML = '';
-    
-    drivers.forEach((driver, index) => {
+    let filteredDrivers = drivers;
+    if (!currentUser || currentUser.role !== 'admin') {
+        filteredDrivers = drivers.filter(driver => driver.registeredBy === 'admin');
+    }
+    filteredDrivers.forEach((driver, index) => {
         const row = tbody.insertRow();
         row.innerHTML = `
             <td>${driver.name}</td>
