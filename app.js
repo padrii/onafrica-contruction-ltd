@@ -22,7 +22,32 @@ if (admins.length === 0) {
         registrationDate: new Date().toISOString().split('T')[0],
         status: 'active'
     });
+    admins.push({
+        fullName: 'Wilson Mkuu',
+        username: 'wilson',
+        email: 'wilson@onafrica.com',
+        phone: '0712345678',
+        password: '123456',
+        role: 'admin',
+        registrationDate: new Date().toISOString().split('T')[0],
+        status: 'active'
+    });
     localStorage.setItem('admins', JSON.stringify(admins));
+} else {
+    // Add wilson if not present
+    if (!admins.some(a => a.username === 'wilson')) {
+        admins.push({
+            fullName: 'Wilson Mkuu',
+            username: 'wilson',
+            email: 'wilson@onafrica.com',
+            phone: '0712345678',
+            password: '123456',
+            role: 'admin',
+            registrationDate: new Date().toISOString().split('T')[0],
+            status: 'active'
+        });
+        localStorage.setItem('admins', JSON.stringify(admins));
+    }
 }
 
 // Initialize the application
