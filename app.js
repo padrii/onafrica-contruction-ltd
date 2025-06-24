@@ -34,11 +34,15 @@ function initializeApp() {
     setupEventListeners();
     // Hide driver registration for non-admins
     const registerSection = document.getElementById('register');
-    if (registerSection) {
+    const registerBtn = document.getElementById('registerDriverBtn');
+    const registerInfo = document.getElementById('registerInfo');
+    if (registerBtn && registerInfo) {
         if (!currentUser || currentUser.role !== 'admin') {
-            registerSection.style.display = 'none';
+            registerBtn.disabled = true;
+            registerInfo.style.display = '';
         } else {
-            registerSection.style.display = '';
+            registerBtn.disabled = false;
+            registerInfo.style.display = 'none';
         }
     }
     updateStats();
