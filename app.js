@@ -32,6 +32,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializeApp() {
     setupEventListeners();
+    // Hide driver registration for non-admins
+    const registerSection = document.getElementById('register');
+    if (registerSection) {
+        if (!currentUser || currentUser.role !== 'admin') {
+            registerSection.style.display = 'none';
+        } else {
+            registerSection.style.display = '';
+        }
+    }
     updateStats();
     loadRecentActivity();
     setupStaffEventListeners();
@@ -262,7 +271,8 @@ function switchSection(sectionName) {
 // Driver registration functionality
 function handleDriverRegistration(e) {
     e.preventDefault();
-    
+    const photoInput = document.getElementById('driverPhoto');
+    const nidaNumber = document.getElementById('nidaNumber').value;
     const formData = {
         name: document.getElementById('fullname').value,
         license: document.getElementById('license').value,
@@ -272,33 +282,43 @@ function handleDriverRegistration(e) {
         vehicleType: document.getElementById('vehicleType').value,
         address: document.getElementById('address').value,
         emergencyContact: document.getElementById('emergencyContact').value,
+        nidaNumber: nidaNumber,
         registrationDate: new Date().toISOString().split('T')[0],
         status: 'active',
-        registeredBy: currentUser ? currentUser.username : 'admin'
+        registeredBy: currentUser ? currentUser.username : 'admin',
+        photo: ''
     };
-    
+    // Handle photo upload (as base64)
+    if (photoInput && photoInput.files && photoInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            formData.photo = evt.target.result;
+            saveDriverAndGenerateCertificate(formData);
+        };
+        reader.readAsDataURL(photoInput.files[0]);
+    } else {
+        saveDriverAndGenerateCertificate(formData);
+    }
+}
+
+function saveDriverAndGenerateCertificate(formData) {
     // Validation
     if (!validateDriverData(formData)) {
         return;
     }
-    
     // Check if driver already exists
     if (drivers.some(driver => driver.license === formData.license)) {
         showMessage('Dereva na leseni hii tayari amesajiliwa!', 'error');
         return;
     }
-    
     // Add driver
     drivers.push(formData);
     saveDrivers();
-    
     // Generate PDF certificate
     generateDriverCertificate(formData);
-    
     // Reset form and show success message
     document.getElementById('driverForm').reset();
     showMessage('Usajili wa dereva umefanikiwa! Cheti kimeundwa.', 'success');
-    
     // Update stats and recent activity
     updateStats();
     loadRecentActivity();
@@ -357,9 +377,11 @@ function loadDriversTable() {
             <td>${driver.vehicleType}</td>
             <td>${driver.address}</td>
             <td>
+                ${currentUser && currentUser.role === 'admin' ? `
                 <button class="action-btn edit-btn" onclick="editDriver(${index})">Hariri</button>
                 <button class="action-btn terminate-btn" onclick="terminateDriver(${index})">Acha Kazi</button>
                 <button class="action-btn delete-btn" onclick="deleteDriver(${index})">Futa</button>
+                ` : '-'}
             </td>
         `;
     });
@@ -613,47 +635,40 @@ function formatDate(dateString) {
 function generateDriverCertificate(driver) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    
-    // Add company logo/header
+    // Header
     doc.setFontSize(20);
-    doc.text('On Africa Construction', 105, 20, { align: 'center' });
-    
+    doc.text('On Africa Construction', 105, 18, { align: 'center' });
     doc.setFontSize(16);
-    doc.text('Cheti cha Usajili wa Dereva', 105, 35, { align: 'center' });
-    
-    // Add driver information
+    doc.text('Cheti cha Usajili wa Dereva', 105, 30, { align: 'center' });
+    // Picha ya dereva (kama ipo)
+    if (driver.photo) {
+        doc.addImage(driver.photo, 'JPEG', 155, 40, 40, 40);
+    }
+    // Taarifa za dereva
     doc.setFontSize(12);
-    doc.text('Jina Kamili:', 20, 55);
-    doc.text(driver.name, 60, 55);
-    
-    doc.text('Namba ya Leseni:', 20, 65);
-    doc.text(driver.license, 60, 65);
-    
-    doc.text('Tarehe ya Kuisha kwa Leseni:', 20, 75);
-    doc.text(formatDate(driver.licenseExpiry), 60, 75);
-    
-    doc.text('Namba ya Simu:', 20, 85);
-    doc.text(driver.phone, 60, 85);
-    
-    doc.text('Barua Pepe:', 20, 95);
-    doc.text(driver.email, 60, 95);
-    
-    doc.text('Aina ya Gari:', 20, 105);
-    doc.text(driver.vehicleType, 60, 105);
-    
-    doc.text('Mahali anakoishi:', 20, 115);
-    doc.text(driver.address, 60, 115);
-    
-    doc.text('Mawasiliano ya Dharura:', 20, 125);
-    doc.text(driver.emergencyContact, 60, 125);
-    
-    doc.text('Tarehe ya Usajili:', 20, 135);
-    doc.text(formatDate(driver.registrationDate), 60, 135);
-    
-    // Add footer
+    let y = 45;
+    doc.text('Jina Kamili:', 20, y); doc.text(driver.name, 60, y);
+    y += 8;
+    doc.text('Namba ya Leseni:', 20, y); doc.text(driver.license, 60, y);
+    y += 8;
+    doc.text('Namba ya NIDA:', 20, y); doc.text(driver.nidaNumber || '-', 60, y);
+    y += 8;
+    doc.text('Tarehe ya Kuisha kwa Leseni:', 20, y); doc.text(formatDate(driver.licenseExpiry), 60, y);
+    y += 8;
+    doc.text('Namba ya Simu:', 20, y); doc.text(driver.phone, 60, y);
+    y += 8;
+    doc.text('Barua Pepe:', 20, y); doc.text(driver.email, 60, y);
+    y += 8;
+    doc.text('Aina ya Gari:', 20, y); doc.text(driver.vehicleType, 60, y);
+    y += 8;
+    doc.text('Mahali anakoishi:', 20, y); doc.text(driver.address, 60, y);
+    y += 8;
+    doc.text('Mawasiliano ya Dharura:', 20, y); doc.text(driver.emergencyContact, 60, y);
+    y += 8;
+    doc.text('Tarehe ya Usajili:', 20, y); doc.text(formatDate(driver.registrationDate), 60, y);
+    // Footer
     doc.setFontSize(10);
-    doc.text('Cheti hiki kinathibitisha kuwa dereva amesajiliwa na On Africa Construction', 105, 180, { align: 'center' });
-    
+    doc.text('Cheti hiki kinathibitisha kuwa dereva amesajiliwa na On Africa Construction', 105, 190, { align: 'center' });
     doc.save(`cheti_usajili_${driver.name.replace(/\s+/g, '_')}.pdf`);
 }
 
