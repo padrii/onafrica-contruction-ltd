@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mfumo wa Usimamizi wa Madereva - On Africa Construction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="app-container">
+    <div class="app-container"> 
         <!-- Login Section -->
         <div id="login-section" class="section active">
             <div class="login-container">
@@ -124,7 +127,7 @@
                     <i class="fas fa-user-friends"></i> Staff
                 </button>
                 <button class="nav-btn" data-section="fuel-ratio">
-                    <i class="fas fa-gas-pump"></i> Ratio ya Mafuta
+                    Ratio ya Mafuta
                 </button>
                 <button class="nav-btn" data-section="drivers">
                     <i class="fas fa-user-tie"></i> Madereva
@@ -245,7 +248,7 @@
             <!-- Fuel Ratio Management Section -->
             <div id="fuel-ratio" class="dashboard-content">
                 <div class="section-header">
-                    <h2><i class="fas fa-gas-pump"></i> Usimamizi wa Ratio ya Mafuta</h2>
+                    <h2>Usimamizi wa Ratio ya Mafuta</h2>
                     <button id="addFuelRatioBtn" class="btn-primary"><i class="fas fa-plus"></i> Ongeza Rekodi ya Mafuta</button>
                 </div>
                 
@@ -370,7 +373,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="loadedRatio"><i class="fas fa-cog"></i> Uwiano wa Mizigo (L/Km):</label>
-                                <input type="number" id="loadedRatio" step="0.01" min="0" value="0.4" placeholder="0.4">
+                                <input type="number" id="loadedRatio" step="0.01" min="0" value="0.45" placeholder="0.45">
                             </div>
                             <div class="form-group">
                                 <label for="emptyRatio"><i class="fas fa-cog"></i> Uwiano wa Tupu (L/Km):</label>
@@ -390,12 +393,22 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="tankBalance"><i class="fas fa-gas-pump"></i> Salio la Tank (Lita):</label>
+                                <label for="tankCapacity"><i class="fas fa-gas-pump"></i> Uwezo wa Tank (Lita):</label>
+                                <input type="number" id="tankCapacity" step="0.01" min="0" placeholder="Uwezo kamili wa tank">
+                            </div>
+                            <div class="form-group">
+                                <label for="tankBalance"><i class="fas fa-tint"></i> Salio la Tank (Lita):</label>
                                 <input type="number" id="tankBalance" step="0.01" min="0" placeholder="Mafuta yaliyo baki baada ya safari">
                             </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group">
                                 <label for="driverName"><i class="fas fa-user"></i> Jina la Dereva:</label>
                                 <input type="text" id="driverName" placeholder="Jina kamili la dereva">
+                            </div>
+                            <div class="form-group">
+                                <label for="fuelRemaining"><i class="fas fa-gas-pump"></i> Mafuta Yaliyo Baki Baada ya Kazi (Lita):</label>
+                                <input type="number" id="fuelRemaining" step="0.01" min="0" placeholder="Mafuta yaliyo baki baada ya kazi">
                             </div>
                         </div>
                         
@@ -412,12 +425,23 @@
                         
                         <!-- Tank Balance Display -->
                         <div class="form-group">
-                            <label for="tankStatus"><i class="fas fa-gas-pump"></i> Hali ya Tank:</label>
+                            <label for="tankStatus">Hali ya Tank:</label>
                             <div class="consumption-display">
                                 <h4>Salio la Tank baada ya Safari</h4>
                                 <div class="consumption-value" id="tankBalanceDisplay">0.00 L</div>
                                 <div id="tankPercentage" style="margin-top: 10px; font-size: 12px; color: #666;"></div>
                                 <small id="tankInfo">Weka salio la tank na uwezo wake</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Fuel Remaining After Work Display -->
+                        <div class="form-group">
+                            <label for="fuelRemainingStatus">Mafuta Yaliyo Baki Baada ya Kazi:</label>
+                            <div class="consumption-display">
+                                <h4>Mafuta Yaliyo Baki Baada ya Kazi</h4>
+                                <div class="consumption-value" id="fuelRemainingDisplay">0.00 L</div>
+                                <div id="fuelRemainingPercentage" style="margin-top: 10px; font-size: 12px; color: #666;"></div>
+                                <small id="fuelRemainingInfo">Weka mafuta yaliyo baki baada ya kazi</small>
                             </div>
                         </div>
                         
@@ -462,7 +486,7 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="fas fa-gas-pump"></i>
+
                         </div>
                         <h3>Salio la Tank (L)</h3>
                         <p id="totalTankBalance">0</p>
@@ -492,6 +516,7 @@
                                 <th><i class="fas fa-calculator"></i> Kukokotwa (L)</th>
                                 <th><i class="fas fa-tint"></i> Mafuta yaliyo tumika (L)</th>
                                 <th><i class="fas fa-gas-pump"></i> Salio Tank (L)</th>
+                                <th><i class="fas fa-gas-pump"></i> Mafuta Yaliyo Baki (L)</th>
                                 <th><i class="fas fa-user"></i> Dereva</th>
                                 <th><i class="fas fa-money-bill"></i> Gharama (TZS)</th>
                                 <th><i class="fas fa-road"></i> Jumla (Km)</th>
@@ -623,100 +648,184 @@
             <div id="drivers" class="dashboard-content">
                 <div class="section-header">
                     <h2><i class="fas fa-user-tie"></i> Usajili wa Dereva Mpya</h2>
+                    <button id="addDriverBtn" class="btn-primary"><i class="fas fa-plus"></i> Ongeza Dereva Mpya</button>
                 </div>
+                
                 <!-- Fomu ya Usajili wa Dereva -->
                 <div class="driver-form-container">
                     <form id="driverForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="driverFullName"><i class="fas fa-user"></i> Jina Kamili:</label>
-                                <input type="text" id="driverFullName" required placeholder="Jina kamili la dereva">
+                        <!-- Taarifa za Msingi -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-user"></i> Taarifa za Msingi</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="driverFullName"><i class="fas fa-user"></i> Jina Kamili:</label>
+                                    <input type="text" id="driverFullName" required placeholder="Jina kamili la dereva">
+                                </div>
+                                <div class="form-group">
+                                    <label for="driverNidaNumber"><i class="fas fa-id-card-alt"></i> Namba ya NIDA:</label>
+                                    <input type="text" id="driverNidaNumber" required placeholder="Namba ya NIDA">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="driverLicenseNumber"><i class="fas fa-id-card"></i> Namba ya Leseni:</label>
-                                <input type="text" id="driverLicenseNumber" required placeholder="Namba ya leseni">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="driverPhone"><i class="fas fa-phone"></i> Namba ya Simu:</label>
+                                    <input type="tel" id="driverPhone" required placeholder="Namba ya simu">
+                                </div>
+                                <div class="form-group">
+                                    <label for="driverEmail"><i class="fas fa-envelope"></i> Barua Pepe:</label>
+                                    <input type="email" id="driverEmail" placeholder="Barua pepe (si lazima)">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="driverPhone"><i class="fas fa-phone"></i> Namba ya Simu:</label>
-                                <input type="tel" id="driverPhone" required placeholder="Namba ya simu">
-                            </div>
-                            <div class="form-group">
-                                <label for="driverEmail"><i class="fas fa-envelope"></i> Barua pepe:</label>
-                                <input type="email" id="driverEmail" placeholder="Barua pepe (si lazima)">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="driverVehicleType"><i class="fas fa-truck"></i> Aina ya Gari:</label>
-                                <select id="driverVehicleType" required>
-                                    <option value="">Chagua aina ya gari</option>
-                                    <option value="D909">D909</option>
-                                    <option value="D910">D910</option>
-                                    <option value="D911">D911</option>
-                                    <option value="D912">D912</option>
-                                    <option value="D913">D913</option>
-                                    <option value="D89">D89</option>
-                                    <option value="D922">D922</option>
-                                    <option value="D931">D931</option>
-                                    <option value="D932">D932</option>
-                                    <option value="D933">D933</option>
-                                    <option value="D934">D934</option>
-                                    <option value="D935">D935</option>
-                                    <option value="D2050">D2050</option>
-                                    <option value="D2051">D2051</option>
-                                    <option value="D2052">D2052</option>
-                                    <option value="D2053">D2053</option>
-                                    <option value="D2054">D2054</option>
-                                    <option value="D2055">D2055</option>
-                                    <option value="D2056">D2056</option>
-                                    <option value="D2057">D2057</option>
-                                    <option value="D2058">D2058</option>
-                                    <option value="D2059">D2059</option>
-                                    <option value="D2060">D2060</option>
-                                    <option value="E09">E09</option>
-                                    <option value="E33">E33</option>
-                                    <option value="E39">E39</option>
-                                    <option value="E44">E44</option>
-                                    <option value="E45">E45</option>
-                                    <option value="E54">E54</option>
-                                    <option value="E61">E61</option>
-                                    <option value="E63">E63</option>
-                                    <option value="E67">E67</option>
-                                    <option value="E68">E68</option>
-                                    <option value="E69">E69</option>
-                                    <option value="E70">E70</option>
-                                    <option value="E71">E71</option>
-                                    <option value="E72">E72</option>
-                                    <option value="E73">E73</option>
-                                    <option value="E74">E74</option>
-                                    <option value="E75">E75</option>
-                                    <option value="E76">E76</option>
-                                    <option value="E77">E77</option>
-                                    <option value="E78">E78</option>
-                                    <option value="E79">E79</option>
-                                    <option value="E80">E80</option>
-                                    <option value="E81">E81</option>
-                                    <option value="E82">E82</option>
-                                    <option value="E83">E83</option>
-                                    <option value="E84">E84</option>
-                                    <option value="E85">E85</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="driverStatus"><i class="fas fa-info-circle"></i> Hali:</label>
-                                <select id="driverStatus" required>
-                                    <option value="active">Aktifu</option>
-                                    <option value="inactive">Haajiriwi</option>
-                                </select>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="driverAddress"><i class="fas fa-map-marker-alt"></i> Anwani:</label>
+                                    <input type="text" id="driverAddress" required placeholder="Mahali anakoishi">
+                                </div>
+                                <div class="form-group">
+                                    <label for="driverEmergencyContact"><i class="fas fa-phone-alt"></i> Mawasiliano ya Dharura:</label>
+                                    <input type="tel" id="driverEmergencyContact" required placeholder="Namba ya mawasiliano ya dharura">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="driverNotes"><i class="fas fa-comment"></i> Maelezo (Si lazima):</label>
-                            <textarea id="driverNotes" rows="3" placeholder="Weka maelezo yoyote ya ziada..."></textarea>
+
+                        <!-- Taarifa za Leseni -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-id-card"></i> Taarifa za Leseni</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="driverLicenseNumber"><i class="fas fa-id-card"></i> Namba ya Leseni:</label>
+                                    <input type="text" id="driverLicenseNumber" required placeholder="Namba ya leseni">
+                                </div>
+                                <div class="form-group">
+                                    <label for="driverLicenseExpiry"><i class="fas fa-calendar-times"></i> Tarehe ya Kuisha kwa Leseni:</label>
+                                    <input type="date" id="driverLicenseExpiry" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="driverLicenseClass"><i class="fas fa-certificate"></i> Aina ya Leseni:</label>
+                                    <select id="driverLicenseClass" required>
+                                        <option value="">Chagua aina ya leseni</option>
+                                        <option value="A">A - Pikipiki</option>
+                                        <option value="B">B - Gari dogo</option>
+                                        <option value="C">C - Gari kubwa</option>
+                                        <option value="D">D - Lori</option>
+                                        <option value="E">E - Trailer</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="driverExperience"><i class="fas fa-clock"></i> Uzoefu wa Miaka:</label>
+                                    <input type="number" id="driverExperience" min="0" max="50" placeholder="Miaka ya uzoefu">
+                                </div>
+                            </div>
                         </div>
-                        <button type="submit"><i class="fas fa-save"></i> Hifadhi Dereva</button>
+
+                        <!-- Taarifa za Kazi -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-briefcase"></i> Taarifa za Kazi</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="driverVehicleType"><i class="fas fa-truck"></i> Aina ya Gari:</label>
+                                    <select id="driverVehicleType" required>
+                                        <option value="">Chagua aina ya gari</option>
+                                        <option value="D909">D909</option>
+                                        <option value="D910">D910</option>
+                                        <option value="D911">D911</option>
+                                        <option value="D912">D912</option>
+                                        <option value="D913">D913</option>
+                                        <option value="D89">D89</option>
+                                        <option value="D922">D922</option>
+                                        <option value="D931">D931</option>
+                                        <option value="D932">D932</option>
+                                        <option value="D933">D933</option>
+                                        <option value="D934">D934</option>
+                                        <option value="D935">D935</option>
+                                        <option value="D2050">D2050</option>
+                                        <option value="D2051">D2051</option>
+                                        <option value="D2052">D2052</option>
+                                        <option value="D2053">D2053</option>
+                                        <option value="D2054">D2054</option>
+                                        <option value="D2055">D2055</option>
+                                        <option value="D2056">D2056</option>
+                                        <option value="D2057">D2057</option>
+                                        <option value="D2058">D2058</option>
+                                        <option value="D2059">D2059</option>
+                                        <option value="D2060">D2060</option>
+                                        <option value="E09">E09</option>
+                                        <option value="E33">E33</option>
+                                        <option value="E39">E39</option>
+                                        <option value="E44">E44</option>
+                                        <option value="E45">E45</option>
+                                        <option value="E54">E54</option>
+                                        <option value="E61">E61</option>
+                                        <option value="E63">E63</option>
+                                        <option value="E67">E67</option>
+                                        <option value="E68">E68</option>
+                                        <option value="E69">E69</option>
+                                        <option value="E70">E70</option>
+                                        <option value="E71">E71</option>
+                                        <option value="E72">E72</option>
+                                        <option value="E73">E73</option>
+                                        <option value="E74">E74</option>
+                                        <option value="E75">E75</option>
+                                        <option value="E76">E76</option>
+                                        <option value="E77">E77</option>
+                                        <option value="E78">E78</option>
+                                        <option value="E79">E79</option>
+                                        <option value="E80">E80</option>
+                                        <option value="E81">E81</option>
+                                        <option value="E82">E82</option>
+                                        <option value="E83">E83</option>
+                                        <option value="E84">E84</option>
+                                        <option value="E85">E85</option>
+                                        <option value="Truck">Truck</option>
+                                        <option value="Excavator">Excavator</option>
+                                        <option value="Bulldozer">Bulldozer</option>
+                                        <option value="Crane">Crane</option>
+                                        <option value="Loader">Loader</option>
+                                        <option value="Dumper">Dumper</option>
+                                        <option value="Mixer">Mixer</option>
+                                        <option value="Generator">Generator</option>
+                                        <option value="Compactor">Compactor</option>
+                                        <option value="Grader">Grader</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="driverStatus"><i class="fas fa-info-circle"></i> Hali:</label>
+                                    <select id="driverStatus" required>
+                                        <option value="active">Aktifu</option>
+                                        <option value="inactive">Haajiriwi</option>
+                                        <option value="on-leave">Likizo</option>
+                                        <option value="suspended">Amezuiliwa</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="driverSalary"><i class="fas fa-money-bill-wave"></i> Mshahara (TZS):</label>
+                                    <input type="number" id="driverSalary" min="0" placeholder="Mshahara wa kila mwezi">
+                                </div>
+                                <div class="form-group">
+                                    <label for="driverStartDate"><i class="fas fa-calendar-plus"></i> Tarehe ya Kuanza Kazi:</label>
+                                    <input type="date" id="driverStartDate" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Maelezo -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-comment"></i> Maelezo</h3>
+                            <div class="form-group">
+                                <label for="driverNotes"><i class="fas fa-comment"></i> Maelezo (Si lazima):</label>
+                                <textarea id="driverNotes" rows="4" placeholder="Weka maelezo yoyote ya ziada kuhusu dereva..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Sajili Dereva</button>
+                            <button type="reset" class="btn-secondary"><i class="fas fa-undo"></i> Safisha Fomu</button>
+                        </div>
                         <p id="driverMessage" class="message"></p>
                     </form>
                 </div>
@@ -730,11 +839,13 @@
                         <thead>
                             <tr>
                                 <th><i class="fas fa-user"></i> Jina</th>
-                                <th><i class="fas fa-id-card"></i> Namba ya Leseni</th>
+                                <th><i class="fas fa-id-card"></i> NIDA</th>
+                                <th><i class="fas fa-id-card"></i> Leseni</th>
                                 <th><i class="fas fa-phone"></i> Simu</th>
                                 <th><i class="fas fa-envelope"></i> Barua pepe</th>
+                                <th><i class="fas fa-truck"></i> Gari</th>
                                 <th><i class="fas fa-calendar"></i> Tarehe ya Ajiri</th>
-                                <th><i class="fas fa-truck"></i> Aina ya Gari</th>
+                                <th><i class="fas fa-money-bill-wave"></i> Mshahara</th>
                                 <th><i class="fas fa-info-circle"></i> Hali</th>
                                 <th><i class="fas fa-cogs"></i> Vitendo</th>
                             </tr>

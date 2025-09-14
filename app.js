@@ -730,7 +730,9 @@ function setupFuelRatioEventListeners() {
     const tripStatus = document.getElementById('tripStatus');
     const loadedRatio = document.getElementById('loadedRatio');
     const emptyRatio = document.getElementById('emptyRatio');
+    const tankCapacity = document.getElementById('tankCapacity');
     const tankBalance = document.getElementById('tankBalance');
+    const fuelRemaining = document.getElementById('fuelRemaining');
     
     if (tripType) {
         tripType.addEventListener('change', toggleTripFields);
@@ -753,8 +755,14 @@ function setupFuelRatioEventListeners() {
     if (emptyRatio) {
         emptyRatio.addEventListener('input', calculateFuelConsumption);
     }
+    if (tankCapacity) {
+        tankCapacity.addEventListener('input', calculateTankBalance);
+    }
     if (tankBalance) {
         tankBalance.addEventListener('input', calculateTankBalance);
+    }
+    if (fuelRemaining) {
+        fuelRemaining.addEventListener('input', calculateFuelRemaining);
     }
     
 }
@@ -790,7 +798,7 @@ function handleFuelRatioSubmission(e) {
     e.preventDefault();
     
     const tripType = document.getElementById('tripType').value;
-    const loadedRatio = parseFloat(document.getElementById('loadedRatio').value) || 0.4;
+    const loadedRatio = parseFloat(document.getElementById('loadedRatio').value) || 0.45;
     const emptyRatio = parseFloat(document.getElementById('emptyRatio').value) || 0.35;
     
     const formData = {
@@ -800,7 +808,9 @@ function handleFuelRatioSubmission(e) {
         date: document.getElementById('fuelDate').value,
         fuelAmount: parseFloat(document.getElementById('fuelAmount').value),
         fuelCost: parseFloat(document.getElementById('fuelCost').value),
+        tankCapacity: parseFloat(document.getElementById('tankCapacity').value) || 0,
         tankBalance: parseFloat(document.getElementById('tankBalance').value) || 0,
+        fuelRemaining: parseFloat(document.getElementById('fuelRemaining').value) || 0,
         driverName: document.getElementById('driverName').value,
         notes: document.getElementById('fuelNotes').value,
         loadedRatio: loadedRatio,
@@ -938,7 +948,7 @@ function toggleTripFields() {
 // Fuel calculation function
 function calculateFuelConsumption() {
     const tripType = document.getElementById('tripType').value;
-    const loadedRatio = parseFloat(document.getElementById('loadedRatio').value) || 0.4;
+    const loadedRatio = parseFloat(document.getElementById('loadedRatio').value) || 0.45;
     const emptyRatio = parseFloat(document.getElementById('emptyRatio').value) || 0.35;
     const calculatedDisplay = document.getElementById('calculatedFuelDisplay');
     const calculationInfo = document.getElementById('calculationInfo');
@@ -990,18 +1000,43 @@ function calculateFuelConsumption() {
 // Tank balance calculation function
 function calculateTankBalance() {
     const tankBalance = parseFloat(document.getElementById('tankBalance').value) || 0;
+    const tankCapacity = parseFloat(document.getElementById('tankCapacity').value) || 0;
     const tankBalanceDisplay = document.getElementById('tankBalanceDisplay');
     const tankPercentage = document.getElementById('tankPercentage');
     const tankInfo = document.getElementById('tankInfo');
     
     if (tankBalance > 0) {
         tankBalanceDisplay.textContent = tankBalance.toFixed(2) + ' L';
-        tankPercentage.innerHTML = '';
+        
+        if (tankCapacity > 0) {
+            const percentage = (tankBalance / tankCapacity) * 100;
+            tankPercentage.innerHTML = `<div style="background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); height: 8px; border-radius: 4px; width: ${Math.min(percentage, 100)}%; margin-top: 5px;"></div><small>${percentage.toFixed(1)}% ya uwezo wa tank</small>`;
+        } else {
+            tankPercentage.innerHTML = '';
+        }
         tankInfo.textContent = 'Salio la tank baada ya safari';
     } else {
         tankBalanceDisplay.textContent = '0.00 L';
         tankPercentage.innerHTML = '';
         tankInfo.textContent = 'Weka salio la tank baada ya safari';
+    }
+}
+
+// Fuel remaining calculation function
+function calculateFuelRemaining() {
+    const fuelRemaining = parseFloat(document.getElementById('fuelRemaining').value) || 0;
+    const fuelRemainingDisplay = document.getElementById('fuelRemainingDisplay');
+    const fuelRemainingPercentage = document.getElementById('fuelRemainingPercentage');
+    const fuelRemainingInfo = document.getElementById('fuelRemainingInfo');
+    
+    if (fuelRemaining > 0) {
+        fuelRemainingDisplay.textContent = fuelRemaining.toFixed(2) + ' L';
+        fuelRemainingPercentage.innerHTML = '';
+        fuelRemainingInfo.textContent = 'Mafuta yaliyo baki baada ya kazi';
+    } else {
+        fuelRemainingDisplay.textContent = '0.00 L';
+        fuelRemainingPercentage.innerHTML = '';
+        fuelRemainingInfo.textContent = 'Weka mafuta yaliyo baki baada ya kazi';
     }
 }
 
@@ -1034,6 +1069,7 @@ function loadFuelRatioTable() {
             <td>${record.expectedFuelConsumption ? record.expectedFuelConsumption.toFixed(2) + ' L' : '-'}</td>
             <td>${record.totalFuelUsed ? record.totalFuelUsed.toFixed(2) + ' L' : record.fuelAmount ? record.fuelAmount.toFixed(2) + ' L' : '-'}</td>
             <td>${record.tankBalance ? record.tankBalance.toFixed(2) + ' L' : '-'}</td>
+            <td>${record.fuelRemaining ? record.fuelRemaining.toFixed(2) + ' L' : '-'}</td>
             <td>${record.driverName || '-'}</td>
             <td>${record.fuelCost.toLocaleString('en-TZ')} TZS</td>
             <td>${record.totalDistance ? record.totalDistance.toFixed(2) : '0.00'} Km</td>
@@ -1101,7 +1137,7 @@ function saveFuelRatios() {
 function setupDriverEventListeners() {
     const driverForm = document.getElementById('driverForm');
     const searchDrivers = document.getElementById('searchDrivers');
-    const driverModalBtn = document.getElementById('driverModalBtn');
+    const addDriverBtn = document.getElementById('addDriverBtn');
     
     if (driverForm) {
         driverForm.addEventListener('submit', handleDriverSubmission);
@@ -1114,11 +1150,21 @@ function setupDriverEventListeners() {
         });
     }
     
-    if (driverModalBtn) {
-        driverModalBtn.addEventListener('click', (e) => {
+    if (addDriverBtn) {
+        addDriverBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            openDriverModal();
+            setDefaultDriverDates();
+            document.getElementById('driverForm').scrollIntoView({ behavior: 'smooth' });
         });
+    }
+}
+
+function setDefaultDriverDates() {
+    // Set today's date as default for start date
+    const today = new Date().toISOString().split('T')[0];
+    const startDateField = document.getElementById('driverStartDate');
+    if (startDateField && !startDateField.value) {
+        startDateField.value = today;
     }
 }
 
@@ -1127,11 +1173,19 @@ function handleDriverSubmission(e) {
     
     const formData = {
         fullName: document.getElementById('driverFullName').value,
+        nidaNumber: document.getElementById('driverNidaNumber').value,
         licenseNumber: document.getElementById('driverLicenseNumber').value,
+        licenseExpiry: document.getElementById('driverLicenseExpiry').value,
+        licenseClass: document.getElementById('driverLicenseClass').value,
         phone: document.getElementById('driverPhone').value,
         email: document.getElementById('driverEmail').value,
+        address: document.getElementById('driverAddress').value,
+        emergencyContact: document.getElementById('driverEmergencyContact').value,
+        experience: parseInt(document.getElementById('driverExperience').value) || 0,
         vehicleType: document.getElementById('driverVehicleType').value,
         status: document.getElementById('driverStatus').value,
+        salary: parseFloat(document.getElementById('driverSalary').value) || 0,
+        startDate: document.getElementById('driverStartDate').value,
         notes: document.getElementById('driverNotes').value,
         registrationDate: new Date().toISOString().split('T')[0],
         registeredBy: currentUser ? currentUser.username : 'admin'
@@ -1168,18 +1222,51 @@ function validateDriverData(data) {
         showDriverMessage('Jina la dereva ni lazima!', 'error');
         return false;
     }
+    if (!data.nidaNumber.trim()) {
+        showDriverMessage('Namba ya NIDA ni lazima!', 'error');
+        return false;
+    }
     if (!data.licenseNumber.trim()) {
         showDriverMessage('Namba ya leseni ni lazima!', 'error');
+        return false;
+    }
+    if (!data.licenseExpiry) {
+        showDriverMessage('Tarehe ya kuisha kwa leseni ni lazima!', 'error');
+        return false;
+    }
+    if (!data.licenseClass) {
+        showDriverMessage('Aina ya leseni ni lazima!', 'error');
         return false;
     }
     if (!data.phone.trim()) {
         showDriverMessage('Namba ya simu ni lazima!', 'error');
         return false;
     }
+    if (!data.address.trim()) {
+        showDriverMessage('Anwani ni lazima!', 'error');
+        return false;
+    }
+    if (!data.emergencyContact.trim()) {
+        showDriverMessage('Mawasiliano ya dharura ni lazima!', 'error');
+        return false;
+    }
     if (!data.vehicleType) {
         showDriverMessage('Aina ya gari ni lazima!', 'error');
         return false;
     }
+    if (!data.startDate) {
+        showDriverMessage('Tarehe ya kuanza kazi ni lazima!', 'error');
+        return false;
+    }
+    
+    // Check if license is expired
+    const expiryDate = new Date(data.licenseExpiry);
+    const today = new Date();
+    if (expiryDate <= today) {
+        showDriverMessage('Leseni imekwisha! Tafadhali weka leseni mpya.', 'error');
+        return false;
+    }
+    
     return true;
 }
 
@@ -1217,19 +1304,43 @@ function loadDriverTable() {
     
     drivers.forEach((driver, index) => {
         const row = document.createElement('tr');
-        const statusClass = driver.status === 'active' ? 'status-active' : 'status-inactive';
-        const statusText = driver.status === 'active' ? 'Aktifu' : 'Haajiriwi';
+        let statusClass = 'status-inactive';
+        let statusText = 'Haajiriwi';
+        
+        switch(driver.status) {
+            case 'active':
+                statusClass = 'status-active';
+                statusText = 'Aktifu';
+                break;
+            case 'inactive':
+                statusClass = 'status-inactive';
+                statusText = 'Haajiriwi';
+                break;
+            case 'on-leave':
+                statusClass = 'status-warning';
+                statusText = 'Likizo';
+                break;
+            case 'suspended':
+                statusClass = 'status-expired';
+                statusText = 'Amezuiliwa';
+                break;
+        }
         
         row.innerHTML = `
             <td>${driver.fullName}</td>
+            <td>${driver.nidaNumber || '-'}</td>
             <td>${driver.licenseNumber}</td>
             <td>${driver.phone}</td>
             <td>${driver.email || '-'}</td>
-            <td>${formatDate(driver.registrationDate)}</td>
             <td>${driver.vehicleType}</td>
+            <td>${formatDate(driver.startDate || driver.registrationDate)}</td>
+            <td>${driver.salary ? driver.salary.toLocaleString('en-TZ') + ' TZS' : '-'}</td>
             <td><span class="${statusClass}">${statusText}</span></td>
             <td>
-                <button class="btn btn-sm btn-danger" onclick="deleteDriver(${index})">
+                <button class="action-btn edit-btn" onclick="editDriver(${index})">
+                    <i class="fas fa-edit"></i> Hariri
+                </button>
+                <button class="action-btn delete-btn" onclick="deleteDriver(${index})">
                     <i class="fas fa-trash"></i> Futa
                 </button>
             </td>
