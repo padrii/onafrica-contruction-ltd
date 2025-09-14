@@ -621,27 +621,30 @@
 
             <!-- Drivers Section -->
             <div id="drivers" class="dashboard-content">
-                <!-- Fomu ya Usajili wa Dereva tu -->
-                <div class="driver-form-container" style="margin-bottom: 30px;">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-tie"></i> Usajili wa Dereva Mpya</h2>
+                </div>
+                <!-- Fomu ya Usajili wa Dereva -->
+                <div class="driver-form-container">
                     <form id="driverForm">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="driverFullName"><i class="fas fa-user"></i> Jina Kamili:</label>
-                                <input type="text" id="driverFullName" required>
+                                <input type="text" id="driverFullName" required placeholder="Jina kamili la dereva">
                             </div>
                             <div class="form-group">
                                 <label for="driverLicenseNumber"><i class="fas fa-id-card"></i> Namba ya Leseni:</label>
-                                <input type="text" id="driverLicenseNumber" required>
+                                <input type="text" id="driverLicenseNumber" required placeholder="Namba ya leseni">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="driverPhone"><i class="fas fa-phone"></i> Namba ya Simu:</label>
-                                <input type="tel" id="driverPhone" required>
+                                <input type="tel" id="driverPhone" required placeholder="Namba ya simu">
                             </div>
                             <div class="form-group">
                                 <label for="driverEmail"><i class="fas fa-envelope"></i> Barua pepe:</label>
-                                <input type="email" id="driverEmail">
+                                <input type="email" id="driverEmail" placeholder="Barua pepe (si lazima)">
                             </div>
                         </div>
                         <div class="form-row">
@@ -722,56 +725,7 @@
                     <div class="search-box">
                         <i class="fas fa-search"></i>
                         <input type="text" id="searchDrivers" placeholder="Tafuta dereva...">
-                    </div>
-                    <table id="driverTable">
-                        <thead>
-                            <tr>
-                                <th><i class="fas fa-user"></i> Jina</th>
-                                <th><i class="fas fa-id-card"></i> Namba ya Leseni</th>
-                                <th><i class="fas fa-phone"></i> Simu</th>
-                                <th><i class="fas fa-envelope"></i> Barua pepe</th>
-                                <th><i class="fas fa-calendar"></i> Tarehe ya Ajiri</th>
-                                <th><i class="fas fa-truck"></i> Aina ya Gari</th>
-                                <th><i class="fas fa-info-circle"></i> Hali</th>
-                                <th><i class="fas fa-cogs"></i> Vitendo</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-                </div>
-
-                <!-- Driver Statistics -->
-                <div class="fuel-stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <h3>Jumla ya Madereva</h3>
-                        <p id="totalDrivers">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-user-check"></i>
-                        </div>
-                        <h3>Madereva Walioajiriwa</h3>
-                        <p id="activeDrivers">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-user-times"></i>
-                        </div>
-                        <h3>Madereva Waliofukuzwa</h3>
-                        <p id="inactiveDrivers">0</p>
-                    </div>
-                </div>
-
-                <!-- Driver Table -->
-                <div class="table-container">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchDrivers" placeholder="Tafuta dereva...">
-                    </div>
+                   </div>
                     <table id="driverTable">
                         <thead>
                             <tr>

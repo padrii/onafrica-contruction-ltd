@@ -157,7 +157,7 @@ function handleLogin(e) {
 function showDashboard() {
     document.getElementById('login-section').classList.remove('active');
     document.getElementById('dashboard-section').classList.add('active');
-    switchSection('overview');
+    switchSection('drivers');
 }
 
 function handleLogout() {
