@@ -1,6 +1,6 @@
 // Admin credentials
-const ADMIN_USERNAME = 'admin';
-const ADMIN_PASSWORD = 'admin123';
+const ADMIN_USERNAME = 'wilson';
+const ADMIN_PASSWORD = '123456';
 
 // Global variables
 let currentSection = 'overview';
@@ -9,6 +9,7 @@ let drivers = JSON.parse(localStorage.getItem('drivers') || '[]');
 let terminations = JSON.parse(localStorage.getItem('terminations') || '[]');
 let admins = JSON.parse(localStorage.getItem('admins') || '[]');
 let staff = JSON.parse(localStorage.getItem('staff') || '[]');
+let fuelRatios = JSON.parse(localStorage.getItem('fuelRatios') || '[]');
 
 // Initialize default admin if none exists
 if (admins.length === 0) {
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializeApp() {
     setupEventListeners();
+    setupDriverEventListeners(); // Ensure driver modal and form listeners are set
     // Hide driver registration for non-admins
     const registerSection = document.getElementById('register');
     const registerBtn = document.getElementById('registerDriverBtn');
@@ -94,8 +96,6 @@ function setupEventListeners() {
         btn.addEventListener('click', () => switchSection(btn.dataset.section));
     });
     
-    // Driver registration form
-    document.getElementById('driverForm').addEventListener('submit', handleDriverRegistration);
     
     // Search functionality
     document.getElementById('searchDrivers').addEventListener('input', filterDrivers);
@@ -294,153 +294,24 @@ function switchSection(sectionName) {
         case 'staff':
             loadStaffTable();
             break;
+        case 'fuel-ratio':
+            loadFuelRatioTable();
+            updateFuelStats();
+            setDefaultDate();
+            break;
+        case 'drivers':
+            loadDriverTable();
+            updateDriverStats();
+            break;
     }
 }
 
-// Driver registration functionality
-function handleDriverRegistration(e) {
-    e.preventDefault();
-    const photoInput = document.getElementById('driverPhoto');
-    const nidaNumber = document.getElementById('nidaNumber').value;
-    const formData = {
-        name: document.getElementById('fullname').value,
-        license: document.getElementById('license').value,
-        licenseExpiry: document.getElementById('licenseExpiry').value,
-        phone: document.getElementById('phone').value,
-        email: document.getElementById('email').value,
-        vehicleType: document.getElementById('vehicleType').value,
-        address: document.getElementById('address').value,
-        emergencyContact: document.getElementById('emergencyContact').value,
-        nidaNumber: nidaNumber,
-        registrationDate: new Date().toISOString().split('T')[0],
-        status: 'active',
-        registeredBy: currentUser ? currentUser.username : 'admin',
-        photo: ''
-    };
-    // Handle photo upload (as base64)
-    if (photoInput && photoInput.files && photoInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            formData.photo = evt.target.result;
-            saveDriverAndGenerateCertificate(formData);
-        };
-        reader.readAsDataURL(photoInput.files[0]);
-    } else {
-        saveDriverAndGenerateCertificate(formData);
-    }
-}
 
-function saveDriverAndGenerateCertificate(formData) {
-    // Validation
-    if (!validateDriverData(formData)) {
-        return;
-    }
-    // Check if driver already exists
-    if (drivers.some(driver => driver.license === formData.license)) {
-        showMessage('Dereva na leseni hii tayari amesajiliwa!', 'error');
-        return;
-    }
-    // Add driver
-    drivers.push(formData);
-    saveDrivers();
-    // Generate PDF certificate
-    generateDriverCertificate(formData);
-    // Reset form and show success message
-    document.getElementById('driverForm').reset();
-    showMessage('Usajili wa dereva umefanikiwa! Cheti kimeundwa.', 'success');
-    // Update stats and recent activity
-    updateStats();
-    loadRecentActivity();
-}
 
-function validateDriverData(data) {
-    const requiredFields = ['name', 'license', 'licenseExpiry', 'phone', 'email', 'vehicleType', 'address', 'emergencyContact'];
-    
-    for (let field of requiredFields) {
-        if (!data[field] || data[field].trim() === '') {
-            showMessage('Tafadhali jaza sehemu zote muhimu.', 'error');
-            return false;
-        }
-    }
-    
-    // Check license expiry
-    const expiryDate = new Date(data.licenseExpiry);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    if (expiryDate < today) {
-        showMessage('Leseni imekwisha muda wake. Tafadhali weka leseni halali.', 'error');
-        return false;
-    }
-    
-    return true;
-}
 
-function showMessage(message, type) {
-    const messageElement = document.getElementById('message');
-    messageElement.textContent = message;
-    messageElement.className = `message ${type}`;
-    
-    setTimeout(() => {
-        messageElement.textContent = '';
-        messageElement.className = 'message';
-    }, 5000);
-}
 
-// Driver table functionality
-function loadDriversTable() {
-    const tbody = document.querySelector('#driversTable tbody');
-    tbody.innerHTML = '';
-    let filteredDrivers = drivers;
-    if (!currentUser || currentUser.role !== 'admin') {
-        filteredDrivers = drivers.filter(driver => driver.registeredBy === 'admin');
-    }
-    filteredDrivers.forEach((driver, index) => {
-        const row = tbody.insertRow();
-        row.innerHTML = `
-            <td>${driver.name}</td>
-            <td>${driver.license}</td>
-            <td class="${getLicenseStatusClass(driver.licenseExpiry)}">${formatDate(driver.licenseExpiry)}</td>
-            <td>${driver.phone}</td>
-            <td>${driver.email}</td>
-            <td>${driver.vehicleType}</td>
-            <td>${driver.address}</td>
-            <td>
-                ${currentUser && currentUser.role === 'admin' ? `
-                <button class="action-btn edit-btn" onclick="editDriver(${index})">Hariri</button>
-                <button class="action-btn terminate-btn" onclick="terminateDriver(${index})">Acha Kazi</button>
-                <button class="action-btn delete-btn" onclick="deleteDriver(${index})">Futa</button>
-                ` : '-'}
-            </td>
-        `;
-    });
-}
 
-function filterDrivers() {
-    const searchTerm = document.getElementById('searchDrivers').value.toLowerCase();
-    const tbody = document.querySelector('#driversTable tbody');
-    const rows = tbody.getElementsByTagName('tr');
-    
-    for (let row of rows) {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(searchTerm) ? '' : 'none';
-    }
-}
 
-function getLicenseStatusClass(expiryDate) {
-    const expiry = new Date(expiryDate);
-    const today = new Date();
-    const thirtyDaysFromNow = new Date();
-    thirtyDaysFromNow.setDate(today.getDate() + 30);
-    
-    if (expiry < today) {
-        return 'status-expired';
-    } else if (expiry <= thirtyDaysFromNow) {
-        return 'status-warning';
-    } else {
-        return 'status-active';
-    }
-}
 
 // Termination functionality
 function showTerminationModal() {
@@ -725,15 +596,6 @@ function terminateDriver(index) {
     document.getElementById('terminatedDriver').value = index;
 }
 
-function deleteDriver(index) {
-    if (confirm('Una uhakika unataka kufuta dereva huyu?')) {
-        drivers.splice(index, 1);
-        saveDrivers();
-        loadDriversTable();
-        updateStats();
-        loadRecentActivity();
-    }
-}
 
 function deleteTermination(index) {
     if (confirm('Una uhakika unataka kufuta taarifa hizi za kuacha kazi?')) {
@@ -752,7 +614,7 @@ function editAdmin(index) {
 
 function deleteAdmin(index) {
     const admin = admins[index];
-    if (admin.username === 'admin') {
+    if (admin.username === 'wilson') {
         alert('Huwezi kufuta msimamizi mkuu!');
         return;
     }
@@ -849,10 +711,59 @@ function setupStaffEventListeners() {
     }
 }
 
-// Extend closeAllModals to also close staffModal
+// Add event listeners for fuel ratio management
+function setupFuelRatioEventListeners() {
+    const fuelRatioForm = document.getElementById('fuelRatioForm');
+    if (fuelRatioForm) {
+        fuelRatioForm.addEventListener('submit', handleFuelRatioSubmission);
+    }
+    const searchFuelRatios = document.getElementById('searchFuelRatios');
+    if (searchFuelRatios) {
+        searchFuelRatios.addEventListener('input', filterFuelRatios);
+    }
+    
+    // Add event listeners for fuel calculation
+    const tripType = document.getElementById('tripType');
+    const loadedDistance = document.getElementById('loadedDistance');
+    const emptyDistance = document.getElementById('emptyDistance');
+    const fuelDistance = document.getElementById('fuelDistance');
+    const tripStatus = document.getElementById('tripStatus');
+    const loadedRatio = document.getElementById('loadedRatio');
+    const emptyRatio = document.getElementById('emptyRatio');
+    const tankBalance = document.getElementById('tankBalance');
+    
+    if (tripType) {
+        tripType.addEventListener('change', toggleTripFields);
+    }
+    if (loadedDistance) {
+        loadedDistance.addEventListener('input', calculateFuelConsumption);
+    }
+    if (emptyDistance) {
+        emptyDistance.addEventListener('input', calculateFuelConsumption);
+    }
+    if (fuelDistance) {
+        fuelDistance.addEventListener('input', calculateFuelConsumption);
+    }
+    if (tripStatus) {
+        tripStatus.addEventListener('change', calculateFuelConsumption);
+    }
+    if (loadedRatio) {
+        loadedRatio.addEventListener('input', calculateFuelConsumption);
+    }
+    if (emptyRatio) {
+        emptyRatio.addEventListener('input', calculateFuelConsumption);
+    }
+    if (tankBalance) {
+        tankBalance.addEventListener('input', calculateTankBalance);
+    }
+    
+}
+
+// Extend closeAllModals to also close staffModal and driverModal
 const originalCloseAllModals = closeAllModals;
 closeAllModals = function() {
     document.getElementById('staffModal').style.display = 'none';
+    document.getElementById('driverModal').style.display = 'none';
     originalCloseAllModals();
 };
 
@@ -870,4 +781,496 @@ const originalInitializeApp = initializeApp;
 initializeApp = function() {
     originalInitializeApp();
     setupStaffEventListeners();
-}; 
+    setupFuelRatioEventListeners();
+    setupDriverEventListeners();
+};
+
+// Fuel Ratio Management Functions
+function handleFuelRatioSubmission(e) {
+    e.preventDefault();
+    
+    const tripType = document.getElementById('tripType').value;
+    const loadedRatio = parseFloat(document.getElementById('loadedRatio').value) || 0.4;
+    const emptyRatio = parseFloat(document.getElementById('emptyRatio').value) || 0.35;
+    
+    const formData = {
+        vehicleType: document.getElementById('fuelVehicle').value,
+        tripNumber: document.getElementById('tripNumber').value,
+        tripType: tripType,
+        date: document.getElementById('fuelDate').value,
+        fuelAmount: parseFloat(document.getElementById('fuelAmount').value),
+        fuelCost: parseFloat(document.getElementById('fuelCost').value),
+        tankBalance: parseFloat(document.getElementById('tankBalance').value) || 0,
+        driverName: document.getElementById('driverName').value,
+        notes: document.getElementById('fuelNotes').value,
+        loadedRatio: loadedRatio,
+        emptyRatio: emptyRatio,
+        recordedDate: new Date().toISOString().split('T')[0],
+        recordedBy: currentUser ? currentUser.username : 'admin'
+    };
+    
+    // Calculate distances and fuel consumption based on trip type
+    if (tripType === 'mixed') {
+        formData.loadedDistance = parseFloat(document.getElementById('loadedDistance').value) || 0;
+        formData.emptyDistance = parseFloat(document.getElementById('emptyDistance').value) || 0;
+        formData.totalDistance = formData.loadedDistance + formData.emptyDistance;
+        formData.expectedFuelConsumption = (formData.loadedDistance * loadedRatio) + (formData.emptyDistance * emptyRatio);
+        // Calculate total fuel used for mixed trip
+        formData.totalFuelUsed = formData.fuelAmount;
+    } else {
+        formData.distance = parseFloat(document.getElementById('fuelDistance').value) || 0;
+        formData.totalDistance = formData.distance;
+        formData.tripStatus = document.getElementById('tripStatus').value;
+        formData.expectedFuelConsumption = formData.distance * (formData.tripStatus === 'loaded' ? loadedRatio : emptyRatio);
+        formData.loadedDistance = formData.tripStatus === 'loaded' ? formData.distance : 0;
+        formData.emptyDistance = formData.tripStatus === 'empty' ? formData.distance : 0;
+        // Calculate total fuel used for single type trip
+        formData.totalFuelUsed = formData.fuelAmount;
+    }
+    
+    
+    // Calculate fuel consumption ratio
+    formData.consumptionRatio = formData.totalDistance > 0 ? (formData.fuelAmount / formData.totalDistance).toFixed(3) : 0;
+    
+    // Validation
+    if (!validateFuelRatioData(formData)) {
+        return;
+    }
+    
+    // Add fuel ratio record
+    fuelRatios.push(formData);
+    saveFuelRatios();
+    
+    // Reset form and show success message
+    document.getElementById('fuelRatioForm').reset();
+    showFuelMessage('Rekodi ya mafuta imehifadhiwa kikamilifu!', 'success');
+    
+    // Update tables and stats
+    loadFuelRatioTable();
+    updateFuelStats();
+    loadRecentActivity();
+}
+
+function validateFuelRatioData(data) {
+    const requiredFields = ['vehicleType', 'tripNumber', 'tripType', 'date', 'fuelAmount', 'fuelCost'];
+    
+    for (let field of requiredFields) {
+        if (!data[field] || data[field] === '') {
+            showFuelMessage('Tafadhali jaza sehemu zote muhimu.', 'error');
+            return false;
+        }
+    }
+    
+    // Validate distance based on trip type
+    if (data.tripType === 'mixed') {
+        if (data.loadedDistance <= 0 && data.emptyDistance <= 0) {
+            showFuelMessage('Tafadhali weka umbali wa mizigo au tupu.', 'error');
+            return false;
+        }
+    } else {
+        if (data.totalDistance <= 0) {
+            showFuelMessage('Tafadhali weka umbali wa safari.', 'error');
+            return false;
+        }
+    }
+    
+    if (data.fuelAmount <= 0) {
+        showFuelMessage('Kiasi cha mafuta lazima kiwe zaidi ya sifuri.', 'error');
+        return false;
+    }
+    
+    if (data.fuelCost <= 0) {
+        showFuelMessage('Gharama ya mafuta lazima iwe zaidi ya sifuri.', 'error');
+        return false;
+    }
+    
+    if (data.distance <= 0) {
+        showFuelMessage('Umbali lazima uwe zaidi ya sifuri.', 'error');
+        return false;
+    }
+    
+    return true;
+}
+
+function showFuelMessage(message, type) {
+    const messageElement = document.getElementById('fuelMessage');
+    messageElement.textContent = message;
+    messageElement.className = `message ${type}`;
+    
+    setTimeout(() => {
+        messageElement.textContent = '';
+        messageElement.className = 'message';
+    }, 5000);
+}
+
+function setDefaultDate() {
+    // Set today's date as default
+    document.getElementById('fuelDate').value = new Date().toISOString().split('T')[0];
+}
+
+// Toggle trip fields based on trip type
+function toggleTripFields() {
+    const tripType = document.getElementById('tripType').value;
+    const mixedFields = document.getElementById('mixedTripFields');
+    const singleFields = document.getElementById('singleTripFields');
+    
+    // Hide both field sets first
+    mixedFields.style.display = 'none';
+    singleFields.style.display = 'none';
+    
+    // Show appropriate fields based on trip type
+    if (tripType === 'mixed') {
+        mixedFields.style.display = 'flex';
+    } else if (tripType === 'loaded-only' || tripType === 'empty-only') {
+        singleFields.style.display = 'flex';
+        // Set trip status based on type
+        if (tripType === 'loaded-only') {
+            document.getElementById('tripStatus').value = 'loaded';
+        } else {
+            document.getElementById('tripStatus').value = 'empty';
+        }
+    }
+    
+    // Recalculate fuel consumption
+    calculateFuelConsumption();
+}
+
+// Fuel calculation function
+function calculateFuelConsumption() {
+    const tripType = document.getElementById('tripType').value;
+    const loadedRatio = parseFloat(document.getElementById('loadedRatio').value) || 0.4;
+    const emptyRatio = parseFloat(document.getElementById('emptyRatio').value) || 0.35;
+    const calculatedDisplay = document.getElementById('calculatedFuelDisplay');
+    const calculationInfo = document.getElementById('calculationInfo');
+    const calculationBreakdown = document.getElementById('calculationBreakdown');
+    
+    let totalFuelConsumption = 0;
+    let breakdown = '';
+    
+    if (tripType === 'mixed') {
+        const loadedDistance = parseFloat(document.getElementById('loadedDistance').value) || 0;
+        const emptyDistance = parseFloat(document.getElementById('emptyDistance').value) || 0;
+        
+        if (loadedDistance > 0 || emptyDistance > 0) {
+            const loadedFuel = loadedDistance * loadedRatio;
+            const emptyFuel = emptyDistance * emptyRatio;
+            totalFuelConsumption = loadedFuel + emptyFuel;
+            
+            breakdown = `
+                <div>Mizigo: ${loadedDistance} km × ${loadedRatio} = ${loadedFuel.toFixed(2)} L</div>
+                <div>Tupu: ${emptyDistance} km × ${emptyRatio} = ${emptyFuel.toFixed(2)} L</div>
+                <div><strong>Jumla: ${totalFuelConsumption.toFixed(2)} L</strong></div>
+            `;
+        }
+    } else if (tripType === 'loaded-only' || tripType === 'empty-only') {
+        const distance = parseFloat(document.getElementById('fuelDistance').value) || 0;
+        const status = document.getElementById('tripStatus').value;
+        
+        if (distance > 0) {
+            const ratio = status === 'loaded' ? loadedRatio : emptyRatio;
+            totalFuelConsumption = distance * ratio;
+            
+            breakdown = `
+                <div>${status === 'loaded' ? 'Mizigo' : 'Tupu'}: ${distance} km × ${ratio} = ${totalFuelConsumption.toFixed(2)} L</div>
+            `;
+        }
+    }
+    
+    if (totalFuelConsumption > 0) {
+        calculatedDisplay.textContent = totalFuelConsumption.toFixed(2) + ' L';
+        calculationInfo.textContent = 'Jumla ya mafuta yaliyo tumika:';
+        calculationBreakdown.innerHTML = breakdown;
+    } else {
+        calculatedDisplay.textContent = '0.00 L';
+        calculationInfo.textContent = 'Weka umbali na aina ya safari ili kuona hesabu';
+        calculationBreakdown.innerHTML = '';
+    }
+}
+
+// Tank balance calculation function
+function calculateTankBalance() {
+    const tankBalance = parseFloat(document.getElementById('tankBalance').value) || 0;
+    const tankBalanceDisplay = document.getElementById('tankBalanceDisplay');
+    const tankPercentage = document.getElementById('tankPercentage');
+    const tankInfo = document.getElementById('tankInfo');
+    
+    if (tankBalance > 0) {
+        tankBalanceDisplay.textContent = tankBalance.toFixed(2) + ' L';
+        tankPercentage.innerHTML = '';
+        tankInfo.textContent = 'Salio la tank baada ya safari';
+    } else {
+        tankBalanceDisplay.textContent = '0.00 L';
+        tankPercentage.innerHTML = '';
+        tankInfo.textContent = 'Weka salio la tank baada ya safari';
+    }
+}
+
+
+function loadFuelRatioTable() {
+    const tbody = document.querySelector('#fuelRatioTable tbody');
+    tbody.innerHTML = '';
+    
+    fuelRatios.forEach((record, index) => {
+        const row = tbody.insertRow();
+        let tripTypeText = '';
+        let statusClass = '';
+        
+        if (record.tripType === 'mixed') {
+            tripTypeText = 'Mchanganyiko';
+            statusClass = 'status-mixed';
+        } else if (record.tripType === 'loaded-only') {
+            tripTypeText = 'Mizigo Pekee';
+            statusClass = 'status-loaded';
+        } else if (record.tripType === 'empty-only') {
+            tripTypeText = 'Tupu Pekee';
+            statusClass = 'status-empty';
+        }
+        
+        row.innerHTML = `
+            <td>${record.vehicleType}</td>
+            <td>${record.tripNumber || '-'}</td>
+            <td><span class="${statusClass}">${tripTypeText}</span></td>
+            <td>${formatDate(record.date)}</td>
+            <td>${record.expectedFuelConsumption ? record.expectedFuelConsumption.toFixed(2) + ' L' : '-'}</td>
+            <td>${record.totalFuelUsed ? record.totalFuelUsed.toFixed(2) + ' L' : record.fuelAmount ? record.fuelAmount.toFixed(2) + ' L' : '-'}</td>
+            <td>${record.tankBalance ? record.tankBalance.toFixed(2) + ' L' : '-'}</td>
+            <td>${record.driverName || '-'}</td>
+            <td>${record.fuelCost.toLocaleString('en-TZ')} TZS</td>
+            <td>${record.totalDistance ? record.totalDistance.toFixed(2) : '0.00'} Km</td>
+            <td>${record.loadedDistance ? record.loadedDistance.toFixed(2) : '0.00'} Km</td>
+            <td>${record.emptyDistance ? record.emptyDistance.toFixed(2) : '0.00'} Km</td>
+            <td>${record.consumptionRatio} L/Km</td>
+            <td>${record.notes || '-'}</td>
+            <td>
+                <button class="action-btn edit-btn" onclick="editFuelRatio(${index})">Hariri</button>
+                <button class="action-btn delete-btn" onclick="deleteFuelRatio(${index})">Futa</button>
+            </td>
+        `;
+    });
+}
+
+function filterFuelRatios() {
+    const searchTerm = document.getElementById('searchFuelRatios').value.toLowerCase();
+    const tbody = document.querySelector('#fuelRatioTable tbody');
+    const rows = tbody.getElementsByTagName('tr');
+    
+    for (let row of rows) {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+    }
+}
+
+function updateFuelStats() {
+    const totalFuelAmount = fuelRatios.reduce((sum, record) => sum + record.fuelAmount, 0);
+    const totalFuelCost = fuelRatios.reduce((sum, record) => sum + record.fuelCost, 0);
+    const totalDistance = fuelRatios.reduce((sum, record) => sum + (record.totalDistance || record.distance || 0), 0);
+    const averageConsumption = totalDistance > 0 ? (totalFuelAmount / totalDistance).toFixed(3) : 0;
+    
+    // Tank balance statistics
+    const totalTankBalance = fuelRatios.reduce((sum, record) => sum + (record.tankBalance || 0), 0);
+    const totalDriversRegistered = fuelRatios.filter(record => record.driverName && record.driverName.trim() !== '').length;
+    
+    document.getElementById('totalFuelAmount').textContent = totalFuelAmount.toFixed(2);
+    document.getElementById('totalFuelCost').textContent = totalFuelCost.toLocaleString('en-TZ');
+    document.getElementById('totalDistance').textContent = totalDistance.toFixed(2);
+    document.getElementById('averageConsumption').textContent = averageConsumption;
+    document.getElementById('totalTankBalance').textContent = totalTankBalance.toFixed(2);
+    document.getElementById('totalDriversRegistered').textContent = totalDriversRegistered;
+}
+
+function editFuelRatio(index) {
+    // Implementation for editing fuel ratio
+    alert('Utengenezaji wa hariri rekodi ya mafuta utafanywa baadae.');
+}
+
+function deleteFuelRatio(index) {
+    if (confirm('Una uhakika unataka kufuta rekodi hii ya mafuta?')) {
+        fuelRatios.splice(index, 1);
+        saveFuelRatios();
+        loadFuelRatioTable();
+        updateFuelStats();
+        loadRecentActivity();
+    }
+}
+
+function saveFuelRatios() {
+    localStorage.setItem('fuelRatios', JSON.stringify(fuelRatios));
+}
+
+// Driver Management Functions
+function setupDriverEventListeners() {
+    const driverForm = document.getElementById('driverForm');
+    const searchDrivers = document.getElementById('searchDrivers');
+    const driverModalBtn = document.getElementById('driverModalBtn');
+    
+    if (driverForm) {
+        driverForm.addEventListener('submit', handleDriverSubmission);
+    }
+    
+    if (searchDrivers) {
+        searchDrivers.addEventListener('input', () => {
+            const searchTerm = searchDrivers.value.toLowerCase();
+            filterDrivers(searchTerm);
+        });
+    }
+    
+    if (driverModalBtn) {
+        driverModalBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openDriverModal();
+        });
+    }
+}
+
+function handleDriverSubmission(e) {
+    e.preventDefault();
+    
+    const formData = {
+        fullName: document.getElementById('driverFullName').value,
+        licenseNumber: document.getElementById('driverLicenseNumber').value,
+        phone: document.getElementById('driverPhone').value,
+        email: document.getElementById('driverEmail').value,
+        vehicleType: document.getElementById('driverVehicleType').value,
+        status: document.getElementById('driverStatus').value,
+        notes: document.getElementById('driverNotes').value,
+        registrationDate: new Date().toISOString().split('T')[0],
+        registeredBy: currentUser ? currentUser.username : 'admin'
+    };
+    
+    // Validation
+    if (!validateDriverData(formData)) {
+        return;
+    }
+    
+    // Check if license number already exists
+    if (drivers.some(driver => driver.licenseNumber === formData.licenseNumber)) {
+        showDriverMessage('Namba ya leseni tayari imetumika!', 'error');
+        return;
+    }
+    
+    // Add driver
+    drivers.push(formData);
+    saveDrivers();
+    
+    // Clear form
+    document.getElementById('driverForm').reset();
+    closeDriverModal();
+    
+    // Refresh table
+    loadDriverTable();
+    updateDriverStats();
+    
+    showDriverMessage('Dereva amesajiliwa kwa mafanikio!', 'success');
+}
+
+function validateDriverData(data) {
+    if (!data.fullName.trim()) {
+        showDriverMessage('Jina la dereva ni lazima!', 'error');
+        return false;
+    }
+    if (!data.licenseNumber.trim()) {
+        showDriverMessage('Namba ya leseni ni lazima!', 'error');
+        return false;
+    }
+    if (!data.phone.trim()) {
+        showDriverMessage('Namba ya simu ni lazima!', 'error');
+        return false;
+    }
+    if (!data.vehicleType) {
+        showDriverMessage('Aina ya gari ni lazima!', 'error');
+        return false;
+    }
+    return true;
+}
+
+function showDriverMessage(message, type) {
+    const messageElement = document.getElementById('driverMessage');
+    messageElement.textContent = message;
+    messageElement.className = `message ${type}`;
+    
+    setTimeout(() => {
+        messageElement.textContent = '';
+        messageElement.className = 'message';
+    }, 3000);
+}
+
+function openDriverModal() {
+    console.log('Opening driver modal...');
+    const modal = document.getElementById('driverModal');
+    if (modal) {
+        modal.style.display = 'block';
+        console.log('Driver modal opened successfully');
+    } else {
+        console.error('Driver modal element not found!');
+    }
+}
+
+function closeDriverModal() {
+    document.getElementById('driverModal').style.display = 'none';
+    document.getElementById('driverForm').reset();
+    showDriverMessage('', '');
+}
+
+function loadDriverTable() {
+    const tbody = document.querySelector('#driverTable tbody');
+    tbody.innerHTML = '';
+    
+    drivers.forEach((driver, index) => {
+        const row = document.createElement('tr');
+        const statusClass = driver.status === 'active' ? 'status-active' : 'status-inactive';
+        const statusText = driver.status === 'active' ? 'Aktifu' : 'Haajiriwi';
+        
+        row.innerHTML = `
+            <td>${driver.fullName}</td>
+            <td>${driver.licenseNumber}</td>
+            <td>${driver.phone}</td>
+            <td>${driver.email || '-'}</td>
+            <td>${formatDate(driver.registrationDate)}</td>
+            <td>${driver.vehicleType}</td>
+            <td><span class="${statusClass}">${statusText}</span></td>
+            <td>
+                <button class="btn btn-sm btn-danger" onclick="deleteDriver(${index})">
+                    <i class="fas fa-trash"></i> Futa
+                </button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function deleteDriver(index) {
+    const driver = drivers[index];
+    if (confirm(`Una uhakika unataka kufuta dereva ${driver.fullName}?`)) {
+        drivers.splice(index, 1);
+        saveDrivers();
+        loadDriverTable();
+        updateDriverStats();
+        showDriverMessage('Dereva amefutwa kwa mafanikio!', 'success');
+    }
+}
+
+function filterDrivers(searchTerm) {
+    const rows = document.querySelectorAll('#driverTable tbody tr');
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+function updateDriverStats() {
+    const totalDrivers = drivers.length;
+    const activeDrivers = drivers.filter(driver => driver.status === 'active').length;
+    const inactiveDrivers = drivers.filter(driver => driver.status === 'inactive').length;
+    
+    document.getElementById('totalDrivers').textContent = totalDrivers;
+    document.getElementById('activeDrivers').textContent = activeDrivers;
+    document.getElementById('inactiveDrivers').textContent = inactiveDrivers;
+}
+
+function saveDrivers() {
+    localStorage.setItem('drivers', JSON.stringify(drivers));
+} 
