@@ -123,6 +123,9 @@
                 <button class="nav-btn" data-section="staff">
                     <i class="fas fa-user-friends"></i> Staff
                 </button>
+                <button class="nav-btn" data-section="fuel-ratio">
+                    <i class="fas fa-gas-pump"></i> Ratio ya Mafuta
+                </button>
             </nav>
 
             <!-- Overview Section -->
@@ -365,6 +368,281 @@
                                 <th><i class="fas fa-phone"></i> Simu</th>
                                 <th><i class="fas fa-briefcase"></i> Cheo/Kazi</th>
                                 <th><i class="fas fa-calendar-plus"></i> Tarehe ya Usajili</th>
+                                <th><i class="fas fa-cogs"></i> Vitendo</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Fuel Ratio Management Section -->
+            <div id="fuel-ratio" class="dashboard-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-gas-pump"></i> Usimamizi wa Ratio ya Mafuta</h2>
+                    <button id="addFuelRatioBtn" class="btn-primary"><i class="fas fa-plus"></i> Ongeza Rekodi ya Mafuta</button>
+                </div>
+                
+                <!-- Fuel Ratio Form -->
+                <div class="fuel-form-container">
+                    <form id="fuelRatioForm" class="fuel-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fuelVehicle"><i class="fas fa-truck"></i> Aina ya Gari:</label>
+                                <select id="fuelVehicle" required>
+                                    <option value="">Chagua gari</option>
+                                    <option value="D909">D909</option>
+                                    <option value="D910">D910</option>
+                                    <option value="D911">D911</option>
+                                    <option value="D912">D912</option>
+                                    <option value="D913">D913</option>
+                                    <option value="D931">D931</option>
+                                    <option value="D932">D932</option>
+                                    <option value="D933">D933</option>
+                                    <option value="D934">D934</option>
+                                    <option value="D935">D935</option>
+                                    <option value="D89">D89</option>
+                                    <option value="D922">D922</option>
+                                    <option value="D2050">D2050</option>
+                                    <option value="D2051">D2051</option>
+                                    <option value="D2052">D2052</option>
+                                    <option value="D2053">D2053</option>
+                                    <option value="D2054">D2054</option>
+                                    <option value="D2055">D2055</option>
+                                    <option value="D2056">D2056</option>
+                                    <option value="D2057">D2057</option>
+                                    <option value="D2058">D2058</option>
+                                    <option value="D2059">D2059</option>
+                                    <option value="D2060">D2060</option>
+                                    <option value="E09">E09</option>
+                                    <option value="E33">E33</option>
+                                    <option value="E39">E39</option>
+                                    <option value="E44">E44</option>
+                                    <option value="E45">E45</option>
+                                    <option value="E54">E54</option>
+                                    <option value="E61">E61</option>
+                                    <option value="E63">E63</option>
+                                    <option value="E67">E67</option>
+                                    <option value="E68">E68</option>
+                                    <option value="E69">E69</option>
+                                    <option value="E70">E70</option>
+                                    <option value="E71">E71</option>
+                                    <option value="E72">E72</option>
+                                    <option value="E73">E73</option>
+                                    <option value="E74">E74</option>
+                                    <option value="E75">E75</option>
+                                    <option value="E76">E76</option>
+                                    <option value="E77">E77</option>
+                                    <option value="E78">E78</option>
+                                    <option value="E79">E79</option>
+                                    <option value="E80">E80</option>
+                                    <option value="E81">E81</option>
+                                    <option value="E82">E82</option>
+                                    <option value="E83">E83</option>
+                                    <option value="E84">E84</option>
+                                    <option value="E85">E85</option>
+                                    <option value="Truck">Truck</option>
+                                    <option value="Excavator">Excavator</option>
+                                    <option value="Bulldozer">Bulldozer</option>
+                                    <option value="Crane">Crane</option>
+                                    <option value="Loader">Loader</option>
+                                    <option value="Dumper">Dumper</option>
+                                    <option value="Mixer">Mixer</option>
+                                    <option value="Generator">Generator</option>
+                                    <option value="Compactor">Compactor</option>
+                                    <option value="Grader">Grader</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="fuelDate"><i class="fas fa-calendar"></i> Tarehe:</label>
+                                <input type="date" id="fuelDate" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tripNumber"><i class="fas fa-route"></i> Namba ya Safari (Dn Number):</label>
+                                <input type="text" id="tripNumber" placeholder="Mfano: Dn001" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tripType"><i class="fas fa-truck"></i> Aina ya Safari:</label>
+                                <select id="tripType" required>
+                                    <option value="">Chagua aina</option>
+                                    <option value="mixed">Safari ya Mchanganyiko (Loaded + Empty)</option>
+                                    <option value="loaded-only">Safari ya Mizigo Pekee</option>
+                                    <option value="empty-only">Safari ya Tupu Pekee</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Distance Fields for Mixed Trip -->
+                        <div id="mixedTripFields" class="form-row" style="display: none;">
+                            <div class="form-group">
+                                <label for="loadedDistance"><i class="fas fa-weight"></i> Umbali wa Mizigo (Km):</label>
+                                <input type="number" id="loadedDistance" step="0.01" min="0" placeholder="Umbali wa kusafiri na mizigo">
+                            </div>
+                            <div class="form-group">
+                                <label for="emptyDistance"><i class="fas fa-truck"></i> Umbali wa Tupu (Km):</label>
+                                <input type="number" id="emptyDistance" step="0.01" min="0" placeholder="Umbali wa kurudi tupu">
+                            </div>
+                        </div>
+                        
+                        <!-- Distance Field for Single Type Trip -->
+                        <div id="singleTripFields" class="form-row" style="display: none;">
+                            <div class="form-group">
+                                <label for="fuelDistance"><i class="fas fa-road"></i> Umbali (Km):</label>
+                                <input type="number" id="fuelDistance" step="0.01" min="0" placeholder="Umbali wa safari">
+                            </div>
+                            <div class="form-group">
+                                <label for="tripStatus"><i class="fas fa-weight"></i> Hali ya Safari:</label>
+                                <select id="tripStatus">
+                                    <option value="loaded">Imebeba Mizigo</option>
+                                    <option value="empty">Tupu</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Ratio Settings -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="loadedRatio"><i class="fas fa-cog"></i> Uwiano wa Mizigo (L/Km):</label>
+                                <input type="number" id="loadedRatio" step="0.01" min="0" value="0.4" placeholder="0.4">
+                            </div>
+                            <div class="form-group">
+                                <label for="emptyRatio"><i class="fas fa-cog"></i> Uwiano wa Tupu (L/Km):</label>
+                                <input type="number" id="emptyRatio" step="0.01" min="0" value="0.35" placeholder="0.35">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fuelAmount"><i class="fas fa-tint"></i> Kiasi cha Mafuta (Lita):</label>
+                                <input type="number" id="fuelAmount" step="0.01" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="fuelCost"><i class="fas fa-money-bill"></i> Gharama ya Mafuta (TZS):</label>
+                                <input type="number" id="fuelCost" step="0.01" min="0" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tankBalance"><i class="fas fa-gas-pump"></i> Salio la Tank (Lita):</label>
+                                <input type="number" id="tankBalance" step="0.01" min="0" placeholder="Mafuta yaliyo baki baada ya safari">
+                            </div>
+                            <div class="form-group">
+                                <label for="tankCapacity"><i class="fas fa-database"></i> Uwezo wa Tank (Lita):</label>
+                                <input type="number" id="tankCapacity" step="0.01" min="0" placeholder="Jumla ya uwezo wa tank">
+                            </div>
+                        </div>
+                        
+                        <!-- Fuel Calculation Display -->
+                        <div class="form-group">
+                            <label for="calculatedFuel"><i class="fas fa-calculator"></i> Mafuta yaliyo tumika:</label>
+                            <div class="consumption-display">
+                                <h4>Matumizi ya Mafuta yaliyo tumika</h4>
+                                <div class="consumption-value" id="calculatedFuelDisplay">0.00 L</div>
+                                <div id="calculationBreakdown" style="margin-top: 10px; font-size: 12px; color: #666;"></div>
+                                <small id="calculationInfo">Weka umbali na aina ya safari ili kuona hesabu</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Tank Balance Display -->
+                        <div class="form-group">
+                            <label for="tankStatus"><i class="fas fa-gas-pump"></i> Hali ya Tank:</label>
+                            <div class="consumption-display">
+                                <h4>Salio la Tank baada ya Safari</h4>
+                                <div class="consumption-value" id="tankBalanceDisplay">0.00 L</div>
+                                <div id="tankPercentage" style="margin-top: 10px; font-size: 12px; color: #666;"></div>
+                                <small id="tankInfo">Weka salio la tank na uwezo wake</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Required Fuel to Remain -->
+                        <div class="form-group">
+                            <label for="requiredFuel"><i class="fas fa-calculator"></i> Mafuta yanayotakiwa kubaki:</label>
+                            <div class="consumption-display">
+                                <h4>Mafuta yanayotakiwa kubaki baada ya safari</h4>
+                                <div class="consumption-value" id="requiredFuelDisplay">0.00 L</div>
+                                <div id="requiredFuelInfo" style="margin-top: 10px; font-size: 12px; color: #666;"></div>
+                                <small id="requiredFuelNote">Hesabu: Uwezo wa Tank - Mafuta yaliyo tumika</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="fuelNotes"><i class="fas fa-comment"></i> Maelezo (Si lazima):</label>
+                            <textarea id="fuelNotes" rows="3" placeholder="Weka maelezo yoyote ya ziada..."></textarea>
+                        </div>
+                        <button type="submit" id="saveFuelRatioBtn"><i class="fas fa-save"></i> Hifadhi Rekodi ya Mafuta</button>
+                        <p id="fuelMessage" class="message"></p>
+                    </form>
+                </div>
+
+                <!-- Fuel Ratio Statistics -->
+                <div class="fuel-stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <h3>Jumla ya Mafuta (Lita)</h3>
+                        <p id="totalFuelAmount">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill"></i>
+                        </div>
+                        <h3>Jumla ya Gharama (TZS)</h3>
+                        <p id="totalFuelCost">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <h3>Jumla ya Umbali (Km)</h3>
+                        <p id="totalDistance">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Wastani wa Matumizi (L/Km)</h3>
+                        <p id="averageConsumption">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-gas-pump"></i>
+                        </div>
+                        <h3>Salio la Tank (L)</h3>
+                        <p id="totalTankBalance">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <h3>Wastani wa % Tank</h3>
+                        <p id="averageTankPercentage">0%</p>
+                    </div>
+                </div>
+
+                <!-- Fuel Ratio Table -->
+                <div class="table-container">
+                    <div class="search-box">
+                        <i class="fas fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #666;"></i>
+                        <input type="text" id="searchFuelRatios" placeholder="Tafuta rekodi ya mafuta..." style="padding-left: 40px;">
+                    </div>
+                    <table id="fuelRatioTable">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-truck"></i> Gari</th>
+                                <th><i class="fas fa-route"></i> Safari</th>
+                                <th><i class="fas fa-truck"></i> Aina</th>
+                                <th><i class="fas fa-calendar"></i> Tarehe</th>
+                                <th><i class="fas fa-calculator"></i> Kukokotwa (L)</th>
+                                <th><i class="fas fa-tint"></i> Mafuta yaliyo tumika (L)</th>
+                                <th><i class="fas fa-gas-pump"></i> Salio Tank (L)</th>
+                                <th><i class="fas fa-percentage"></i> % Tank</th>
+                                <th><i class="fas fa-money-bill"></i> Gharama (TZS)</th>
+                                <th><i class="fas fa-road"></i> Jumla (Km)</th>
+                                <th><i class="fas fa-weight"></i> Mizigo (Km)</th>
+                                <th><i class="fas fa-truck"></i> Tupu (Km)</th>
+                                <th><i class="fas fa-chart-line"></i> Matumizi (L/Km)</th>
+                                <th><i class="fas fa-comment"></i> Maelezo</th>
                                 <th><i class="fas fa-cogs"></i> Vitendo</th>
                             </tr>
                         </thead>
