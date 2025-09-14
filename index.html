@@ -621,11 +621,7 @@
 
             <!-- Drivers Section -->
             <div id="drivers" class="dashboard-content">
-                <div class="section-header">
-                    <h2><i class="fas fa-user-tie"></i> Usimamizi wa Madereva</h2>
-                </div>
-
-                <!-- Fomu ya Usajili wa Dereva (inaonekana moja kwa moja) -->
+                <!-- Fomu ya Usajili wa Dereva tu -->
                 <div class="driver-form-container" style="margin-bottom: 30px;">
                     <form id="driverForm">
                         <div class="form-row">
@@ -720,6 +716,28 @@
                         <button type="submit"><i class="fas fa-save"></i> Hifadhi Dereva</button>
                         <p id="driverMessage" class="message"></p>
                     </form>
+                </div>
+                <!-- Jedwali la Orodha ya Madereva -->
+                <div class="table-container">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchDrivers" placeholder="Tafuta dereva...">
+                    </div>
+                    <table id="driverTable">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user"></i> Jina</th>
+                                <th><i class="fas fa-id-card"></i> Namba ya Leseni</th>
+                                <th><i class="fas fa-phone"></i> Simu</th>
+                                <th><i class="fas fa-envelope"></i> Barua pepe</th>
+                                <th><i class="fas fa-calendar"></i> Tarehe ya Ajiri</th>
+                                <th><i class="fas fa-truck"></i> Aina ya Gari</th>
+                                <th><i class="fas fa-info-circle"></i> Hali</th>
+                                <th><i class="fas fa-cogs"></i> Vitendo</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
                 </div>
 
